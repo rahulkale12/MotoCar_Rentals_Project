@@ -1,0 +1,181 @@
+/* postiom adjustment of navbar logo*/
+/* .section-navbar .container .logo{
+    margin-left: -55rem;
+} */
+
+
+
+/* Filter Section Styling */
+.filter {
+    background-color: #222;
+    padding: 2rem;
+    width: 450px; 
+    height: 1100px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    color: #fff; 
+    margin-right: 1rem; 
+    
+}
+
+
+/* Filter Title */
+.filter h3 {
+    font-size: 22px;
+    text-align: center;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+/* Filter Form Table Styling */
+.filter form table {
+    width: 100%;
+    border-spacing: 0 12px; 
+}
+
+.filter form td {
+    padding: 8px 0;
+    font-size: 18px;
+    color: #ddd;
+    font-weight: 600;
+}
+
+.filter form .gear-type td {
+    padding: 8px 0;
+    font-size: 18px;
+    color: #ddd;
+    font-weight: 600;
+}
+
+.filter form  select {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: white;
+}
+
+
+/* Input Fields Inside Filter Form */
+.filter form input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: white;
+}
+
+/* Filter Button */
+.filter form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 25px;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.filter form .reset {
+    width: 30%;
+    padding: 12px;
+    background-color: #dc3545;  
+    color: white;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 14rem;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.filter form .reset:hover {
+    background-color: #c82333;  
+}
+
+.filter form button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+.line{
+    width: 2px;
+    height: 100;
+    background-color: black;
+    margin-left: 5rem;
+    
+}
+
+/*to display fliter and cars section row wise */
+.section-cars{
+    display: flex;
+}
+
+ 
+/*bikes section adjustment */
+
+.section-bikes{
+    display: flex;
+    margin-top: 3rem;
+}
+
+
+/* msg in filter */
+
+.section-cars .container .msg {
+    border: 3px solid black;
+   
+    color: black;
+    padding: 5rem;
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15rem; 
+    width: 700px;
+    /* margin: 10px auto; */
+    & h2{
+        font-size: 3rem;
+        font-weight: bold;
+    }
+}
+
+
+.section-bikes .container .msg{
+    border: 3px solid black;
+   
+    color: black;
+    padding: 5rem;
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15rem; 
+    width: 700px;
+    margin-left: 3rem;
+    & h2{
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+}

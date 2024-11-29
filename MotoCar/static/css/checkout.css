@@ -1,0 +1,99 @@
+/* Overall container for section */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.section-cars {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* Space between products and the form */
+    padding: 50px 20px !important ;
+    margin: 0 auto; /* Center the container */
+    max-width: 100%; /* Prevent from going beyond the viewport */
+    justify-content: space-between;
+    align-items: flex-start; /* Ensure alignment to the top */
+    border: 2px solid black;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 5rem 5rem;
+}
+
+/* Container for products */
+.section-cars .container {
+    width: 100% ;
+    display: grid;
+    grid-template-columns: repeat(2,1fr) !important ;
+    margin: 0 ;
+    gap: 10px ;
+    justify-items: center;
+    align-items: center;
+   
+
+    
+}
+
+
+.section-cars .container .card{
+    transition: none;
+}
+
+.section-cars .container .card:hover{
+    transform: none !important;
+}
+
+
+
+/* Container for the form */
+.form-design {
+    width: 100%; /* Form takes 35% of the container */
+    height: 100vh;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* margin-right: 20rem; */
+}
+
+
+
+
+/* Form Styling */
+.form-design table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.form-design td {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.form-design input, .form-design select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-design button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.form-design button:hover {
+    background-color: #218838;
+}
+
+
+.msg h2{
+    color: crimson;
+}

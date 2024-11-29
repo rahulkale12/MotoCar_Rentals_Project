@@ -1,0 +1,58 @@
+
+.section-cars{
+    margin-top: 5rem;
+}
+
+.section-cars .container{
+    padding-bottom: 6rem;
+}
+
+.section-cars .container .card{
+    transition: none;
+}
+
+.section-cars .container .card:hover{
+    transform: none !important;
+}
+
+
+.section-cars .container {
+    position: relative !important;
+    padding-bottom: 120px; 
+}
+
+.rent-all-btn {
+    position: absolute;
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+}
+
+.rent-all-btn button {
+    background-color: #28a745;  
+    color: white;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.rent-all-btn button:hover {
+    background-color: #218838;
+}
+
+.msg-container {
+    position: relative;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.msg-container h2 {
+    font-size: 18px;
+    color: #ff0000;
+}

@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoCar Rentals</title>
+    
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    <!-- Font Awesome & Bootstrap CDN for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+{% include "loggedin_header.html" %}
+<!-- 
+{{ total_price }}
+{{ delivery_date }} -->
+
+
+
+<section class="section-cars">
+    <div class="container">
+        {% if cart %}
+            <div class="card">
+                <figure>
+                    {% if cart.car %}
+                    <img src="{{ cart.car.image.url }}" alt="Car Image">
+                    {% elif cart.bike %}
+                    <img src="{{ cart.bike.image.url }}" alt="Bike Image">
+                    {% endif %}
+                </figure>
+                <div class="car-content">
+                    {% if cart.car %}
+                        <p class="vehicle-name">{{ cart.car.name }}</p>
+                    {% elif cart.bike %}
+                        <p class="vehicle-name">{{ cart.bike.name }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart.car %}
+                        <p class="fuel-type">Fuel Type: {{ cart.car.fuel_type }}</p>
+                    {% elif cart.bike %}
+                        <p class="fuel-type">Fuel Type: {{ cart.bike.fuel_type }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart.car %}
+                        <p class="gear-type">Gear Type: {{ cart.car.gear_type }}</p>
+                        <p class="price">Price per day: Rs.{{ cart.price_per_day }}</p>
+                        <p class="price">Price per hour: Rs.{{ cart.car.price_per_hour }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart.bike %}
+                        <p class="price">Price per day: Rs.{{ cart.bike.price_per_day }}</p>
+                        <p class="price">Price per hour: Rs.{{ cart.bike.price_per_hour }}</p>
+
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        
+        
+    </div> 
+
+        <div class="form-design">
+
+            <form id="rental-form-{{ cart.id }}" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- <input type="hidden" name="cart.id" value="{{ cart_item.id }}"> -->
+                <table>
+                    
+                    <tr>
+                        <td>Delivery Type:</td>
+                        <td>
+                            <select id="delivery-type" name="delivery_type"  disabled >
+                                <option value="">Select</option>
+                                <option value="pickup" {% if delivery_type == 'pickup' %}selected{% endif %} >Self Pickup</option>
+                                <option value="delivery" {% if delivery_type == 'delivery' %}selected{% endif %} >Delivery</option>
+                            </select>
+                        </td>
+                    </tr>
+                            <!-- Pickup Date and Time -->
+                        <tr id="pickup-date-row-{{ cart.id }}" 
+                        {% if delivery_type == 'pickup' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Pickup Date:</td>
+                        <td><input type="date" name="pickup_date" id="pickup_date" value="{% if pickup_date %}{{ pickup_date|date:'Y-m-d' }}{% endif %}" readonly></td>
+                    </tr>
+                    <tr id="pickup-time-row-{{ cart.id }}" 
+                        {% if delivery_type == 'pickup' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Pickup Time:</td>
+                        <td><input type="time" name="pickup_time" id="pickup_time" value="{% if pickup_time %}{{ pickup_time|time:'H:i' }}{% endif %}" readonly></td>
+                    </tr>
+                    <tr id="pickup-location-row-{{ cart.id }}" 
+                        {% if delivery_type == 'pickup' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Pickup Location:</td>
+                        <td><input type="text" name="pickup_location" id="pickup_location" value="{% if pickup_location %}{{ pickup_location }}{% endif %}" readonly></td>
+                    </tr>
+
+                    <!-- Delivery Date and Time -->
+                    <tr id="delivery-date-row-{{ cart.id }}" 
+                        {% if delivery_type == 'delivery' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Delivery Date:</td>
+                        <td><input type="date" name="delivery_date" id="delivery_date" value="{% if delivery_date %}{{ delivery_date|date:'Y-m-d' }}{% endif %}" readonly></td>
+                    </tr>
+                    <tr id="delivery-time-row-{{ cart.id }}" 
+                        {% if delivery_type == 'delivery' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Delivery Time:</td>
+                        <td><input type="time" name="delivery_time" id="delivery_time" value="{% if delivery_time %}{{ delivery_time|time:'H:i' }}{% endif %}" readonly></td>
+                    </tr>
+                    <tr id="delivery-location-row-{{ cart.id }}" 
+                        {% if delivery_type == 'delivery' %}
+                            style="display: table-row;"
+                        {% else %}
+                            style="display: none;"
+                        {% endif %}>
+                        <td>Delivery Location:</td>
+                        <td><input type="text" name="delivery_location" id="delivery_location" value="{% if delivery_location %}{{ delivery_location }}{% endif %}" readonly></td>
+                    </tr>
+                    
+                    
+                    <tr> 
+                        <td>Return Date:</td>
+                        <td><input type="date" id="return_date" name="return_date" value="{{ return_date|date:'Y-m-d' }}" required readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Return Time:</td>
+                        <td><input type="time" id="return_time" name="return_time" value="{{ return_time|time:'H:i' }}"  required readonly></td>
+                    </tr>
+                    <tr>
+                        <td><input type="hidden" value="{{ license_image }}" id="license_image"></td>
+                    </tr> 
+                   
+                
+                    <tr>
+                        <td>Grand Total:</td>
+                        <td >Rs.<input value="{{ total_price }}" id="total_price"  name="total_price"  readonly></td>
+                        
+                    </tr>
+                   
+
+                   
+                    <!-- <tr>
+                        <td><strong>Grand Total:</strong><span id="grand-total-{{ cart_item.id }}"></span> {{ cart_item.grand_total_price }}</td>
+                    </tr> -->
+                    <tr class="delete-cart">
+                        <td><a href="" class="remove-btn">Remove</a></td>  
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button id="rzp-button">PAY</button></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+ </section>
+
+
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    
+
+    let delivery_type = document.getElementById('delivery-type').value
+    let pickup_location = document.getElementById('pickup_location').value || "None"
+    let pickup_time = document.getElementById('pickup_time').value || "None"
+    let pickup_date = document.getElementById('pickup_date').value || "None"
+    let delivery_location = document.getElementById('delivery_location').value || "None"
+
+
+    let delivery_time = document.getElementById('delivery_time').value || "None"
+    let delivery_date = document.getElementById('delivery_date').value || "None"
+ 
+    
+    let return_date = document.getElementById('return_date').value
+    let return_time = document.getElementById('return_time').value
+
+    let license_image = "{{filename}}"
+    
+    // let license_image = document.getElementById('license_image').value
+    // let encoded_license_image = encodeURIComponent(license_image);
+
+    // alert(license_image)
+    // image_license = "'" + license_image + "'"
+    // alert(image_license)
+    let payment = parseFloat(document.getElementById('total_price').value)*100
+
+
+  
+   
+
+  var options = {
+   "key": "rzp_test_uno8WYY290g5GE", // Enter the Key ID generated from the Dashboard
+   "amount": payment,
+
+    "currency": "INR",
+    "description": "Acme Corp",
+    "image": "example.com/image/rzp.jpg",
+    "prefill":
+    {
+      "email": "rahulkale435@gmail.com",
+      "contact": "+917066249744",
+    },
+    config: {
+      display: {
+        blocks: {
+          utib: { //name for Axis block
+            name: "Pay Using Axis Bank",
+            instruments: [
+              {
+                method: "card",
+                issuers: ["UTIB"]
+              },
+              {
+                method: "netbanking",
+                banks: ["UTIB"]
+              },
+            ]
+          },
+          other: { //  name for other block
+            name: "Other Payment Methods",
+            instruments: [
+              {
+                method: "card",
+                issuers: ["ICIC"]
+              },
+              {
+                method: 'netbanking',
+              }
+            ]
+          }
+        },
+        hide: [
+          {
+          method: "upi"
+          }
+        ],
+        sequence: ["block.utib", "block.other"],
+        preferences: {
+          show_default_blocks: false // Should Checkout show its default blocks?
+        }
+      }
+    },
+    "handler": function (response) {
+      window.location.href = `http://localhost:8000/success_single/{{ cart.id }}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${license_image}/${payment}/${response.razorpay_payment_id}`;
+        
+    },
+    "modal": {
+      "ondismiss": function () {
+        if (confirm("Are you sure, you want to close the form?")) {
+          txt = "You pressed OK!";
+          console.log("Checkout form closed by the user");
+        } else {
+          txt = "You pressed Cancel!";
+          console.log("Complete the Payment")
+        }
+      }
+    }
+  };
+  var rzp = new Razorpay(options);
+  document.getElementById('rzp-button').onclick = function (e) {
+    rzp.open();
+    e.preventDefault();
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

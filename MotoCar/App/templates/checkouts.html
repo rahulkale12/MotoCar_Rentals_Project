@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoCar Rentals</title>
+    
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    <!-- Font Awesome & Bootstrap CDN for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+{% include "loggedin_header.html" %}
+
+<section class="section-cars">
+    <div class="container">
+        {% for cart_item in carts %}
+            <div class="card">
+                <figure>
+                    {% if cart_item.car %}
+                    <img src="{{ cart_item.car.image.url }}" alt="Car Image">
+                    {% elif cart_item.bike %}
+                    <img src="{{ cart_item.bike.image.url }}" alt="Bike Image">
+                    {% endif %}
+                </figure>
+                <div class="car-content">
+                    {% if cart_item.car %}
+                        <p class="vehicle-name">{{ cart_item.car.name }}</p>
+                    {% elif cart_item.bike %}
+                        <p class="vehicle-name">{{ cart_item.bike.name }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart_item.car %}
+                        <p class="fuel-type">Fuel Type: {{ cart_item.car.fuel_type }}</p>
+                    {% elif cart_item.bike %}
+                        <p class="fuel-type">Fuel Type: {{ cart_item.bike.fuel_type }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart_item.car %}
+                        <p class="gear-type">Gear Type: {{ cart_item.car.gear_type }}</p>
+                        <p class="price">Price per day: Rs.{{ cart_item.price_per_day }}</p>
+                        <p class="price">Price per hour: Rs.{{ cart_item.car.price_per_hour }}</p>
+                    {% endif %}
+                    
+                    
+                    {% if cart_item.bike %}
+                        <p class="price">Price per day: Rs.{{ cart_item.bike.price_per_day }}</p>
+                        <p class="price">Price per hour: Rs.{{ cart_item.bike.price_per_hour }}</p>
+
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        
+        
+    </div> 
+
+        <div class="form-design">
+
+            <form id="rental-form-{{ cart_item.id }}" action="/validate_form_multiple/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- <input type="hidden" name="cart_item.id" value="{{ cart_item.id }}"> -->
+                <table>
+                    
+                    <tr>
+                        <td>Delivery Type:</td>
+                        <td>
+                            <select id="delivery-type-{{  cart_item.id }}" name="delivery_type" onchange="toggleFields('{{ cart_item.id }}')">
+                                <option value="">Select</option>
+                                <option value="pickup">Self Pickup</option>
+                                <option value="delivery">Delivery</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    <!-- Pickup Date and Time -->
+                    <tr id="pickup-date-row-{{  cart_item.id }}" style="display: none;">
+                        <td>Pickup Date:</td>
+                        <td><input type="date" name="pickup_date" id="pickup_date_{{ cart_item.id }}" ></td>
+                    </tr>
+                    <tr id="pickup-time-row-{{  cart_item.id }}" style="display: none;">
+                        <td>Pickup Time:</td>
+                        <td><input type="time" name="pickup_time" id="pickup_time_{{  cart_item.id }}" ></td>
+                    </tr>
+                    {% for cart in carts %}
+                    <tr id="pickup-location-row-{{  cart_item.id }}" style="display: none;">
+                        <td>Pickup Location:</td>
+                        <td><input type="text" name="pickup_location" id="pickup_location_{{ cart_item.id }}" value="{{ pickup_location }}" readonly></td>
+                    </tr>
+                    {% endfor %}
+                    
+
+                    <!-- Delivery Date and Time -->
+                    <tr id="delivery-date-row-{{  cart_item.id }}" style="display: none;">
+                        <td>Delivery Date:</td>
+                        <td><input type="date" name="delivery_date" id="delivery_date_{{  cart_item.id }}" ></td>
+                    </tr>
+                    <tr id="delivery-time-row-{{  cart_item.id}}" style="display: none;">
+                        <td>Delivery Time:</td>
+                        <td><input type="time" name="delivery_time" id="delivery_time_{{ cart_item.id }}" ></td>
+                    </tr>
+                    <tr id="delivery-location-row-{{  cart_item.id }}" style="display: none;">
+                        <td>Delivery Location:</td>
+                        <td><input type="text" name="delivery_location" id="delivery_location_{{ cart_item.id }}"  ></td>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <td>Return Date:</td>
+                        <td><input type="date" name="return_date"  required></td>
+                    </tr>
+                    <tr>
+                        <td>Return Time:</td>
+                        <td><input type="time" name="return_time"  required ></td>
+                    </tr>
+                    <tr>
+                        <td>Driving License:</td>
+                        <td><input type="file" name="license_image" accept=".jpg, .jpeg, .png, .pdf"></td>
+                    </tr>
+                    <!-- {% if cart_item.car %}
+                    <tr>
+                        <td>Car Price: Rs.{{ cart_item.car.price_per_day }}</td>
+                    </tr>
+                    {% elif cart.bike %}
+                    <tr>
+                        <td>Bike Price: Rs.{{ cart_item.bike.price_per_day }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td>Car+bike Price: Rs.{{ cart_item.bike.price_per_day }}</td>
+                    </tr>
+                    {% endif %} -->
+
+                    {% if carts %}
+                    <tr>
+                        <td><strong>Grand Total:</strong><span id="grand-total-{{ cart_item.id }}"></span> {{ total_price }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="delete-cart">
+                        <td><a href="" class="remove-btn">Remove</a></td>  
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button type="submit">Submit</button></td>
+                    </tr>
+                </table>
+                <div class="msg">
+                    {% for msg in messages %}
+                    <h2>{{msg}}</h2>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+       
+
+
+ </section>
+
+
+ <script>
+
+    function toggleFields(cartId) {
+        const deliveryType = document.getElementById(`delivery-type-${cartId}`).value;
+        const pickupDateRow = document.getElementById(`pickup-date-row-${cartId}`);
+        const pickupTimeRow = document.getElementById(`pickup-time-row-${cartId}`);
+        const pickupLocationRow = document.getElementById(`pickup-location-row-${cartId}`);
+        const deliveryDateRow = document.getElementById(`delivery-date-row-${cartId}`);
+        const deliveryTimeRow = document.getElementById(`delivery-time-row-${cartId}`);
+        const deliveryLocationRow = document.getElementById(`delivery-location-row-${cartId}`);
+    
+        if (deliveryType === "pickup") {
+            pickupDateRow.style.display = "table-row";
+            pickupTimeRow.style.display = "table-row";
+            pickupLocationRow.style.display = "table-row";
+    
+          
+    
+    
+            deliveryDateRow.style.display = "none";
+            deliveryTimeRow.style.display = "none";
+            deliveryLocationRow.style.display = "none";
+        } else if (deliveryType === "delivery") {
+            deliveryDateRow.style.display = "table-row";
+            deliveryTimeRow.style.display = "table-row";
+            deliveryLocationRow.style.display = "table-row";
+            
+            pickupDateRow.style.display = "none";
+            pickupTimeRow.style.display = "none";
+            pickupLocationRow.style.display = "none";
+        } else {
+            // Hide all rows if no selection
+            pickupDateRow.style.display = "none";
+            pickupTimeRow.style.display = "none";
+            pickupLocationRow.style.display = "none";
+            deliveryDateRow.style.display = "none";
+            deliveryTimeRow.style.display = "none";
+            deliveryLocationRow.style.display = "none";
+        }
+    
+        // myform
+    }
+    
+    
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoCar Rentals</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+</head>
+<body>
+    
+    <!--Navbar Start-->
+    <header class="section-navbar" id="home">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" alt="logo" width="100px" height="auto"></a>
+            </div>
+            <a href="{% url 'index' %}"><h1>MotoCar Rentals</h1></a>
+            <nav class="navbar">
+                <ul >
+                    <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/cars/" class="nav-link">Cars</a></li>
+                    <li class="nav-item"><a href="/bikes/" class="nav-link ">Bikes</a></li>
+                    <li class="nav-item"><a href="/my_rentals/" class="nav-link">My Rentals</a></li>
+                    <li class="nav-item"><a href="/accounts/register/" class="nav-link">Register</a></li>
+                    <li class="nav-item"><a href="/accounts/login/" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    
+    </header>
+
+    <!--Navbar End-->
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--Hero section start-->
+
+
+    <main class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-subheading">INDIA'S FIRST EVER BIKE & CAR RENTAL WEBSITE</p>
+                <h1 class="hero-heading">Affordable Bike and Car Rentals for Every Journey</h1>
+                <p class="hero-para">At MotoCar Rentals, we offer a wide selection of affordable and reliable vehicles to suit every journey. Whether you're exploring the city or embarking on a weekend getaway, our top-notch cars and bikes ensure you travel in style and comfort.</p>
+                <div class="button-group">
+                    <a href="/cars/" class="btn btn-white">Cars</a>
+                    <a href="/bikes/" class="btn btn-white">Bikes</a>
+                </div>
+            </div>
+            <div class="section-hero--image">
+                <figure>
+                    <img src="{% static 'images/mahindra-xuv.jpg' %}" alt="xuv image" width="1000px" height="auto">
+                </figure>
+            </div>
+        </div>
+    </main>
+    
+    
+    <!--Hero section end-->
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--Cars section start-->
+
+    <section class="section-cars">
+       <div class="section-content">
+            <h3>Cars section</h3>
+            <p>Enjoy Your Ride with Freedom and Comfort</p>
+       </div>
+       <div class="container">
+        {% for car in cars %}
+            <!-- {% if forloop.counter <= 6 %} -->
+        <div class="card">
+            <figure>
+                <img src="{{ car.image.url }}" alt="car image">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car:{{car.name}}</p>
+                <p class="fuel-type">Fuel Type: {{car.fuel_type}}</p>
+                <p class="gear-type">Gear Type: {{car.gear_type}}</p>
+                <p class="price">Price per day: Rs.{{car.price_per_day}}</p>
+                <p class="price">Price per hour: Rs.{{car.price_per_hour}}</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <!-- <div class="card">
+            <figure>
+                <img src="{% static 'images/mahindra-thar.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car: Mahindra Thar</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="gear-type">Gear Type: Manual</p>
+                <p class="price">Price: 1000 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/tata-nexon.png' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car: Tata Nexon</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="gear-type">Gear Type: Manual</p>
+                <p class="price">Price: 1000 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/suzuki-ertiga.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car: Maruti Suzuki Ertiga</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="gear-type">Gear Type: Manual</p>
+                <p class="price">Price: 1000 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/tata-safari.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car: Tata Safari</p>
+                <p class="fuel-type">Fuel Type: Deisel</p>
+                <p class="gear-type">Gear Type: Manual</p>
+                <p class="price">Price: 1000 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/kia-seltos.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Car: Kia Seltos</p>
+                <p class="fuel-type">Fuel Type: Diesel</p>
+                <p class="gear-type">Gear Type: Manual</p>
+                <p class="price">Price: 1000 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div> -->
+        
+        <!-- {% endif %} -->
+    {% endfor %}
+
+       </div>
+
+    </section>
+<!--------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--Bike section start-->
+
+    <section class="section-bikes">
+        <div class="section-content">
+             <h3>Bikes section</h3>
+             <p>Enjoy Your Ride with Freedom and Comfort</p>
+        </div>
+        <div class="container">
+        {% for bike in bikes %}
+         <div class="card">
+             <figure>
+                 <img src="{{ bike.image.url }}" alt="bike image">
+             </figure>
+             <div class="car-content">
+                 <p class="car-name">Bike: {{bike.name}}</p>
+                 <p class="fuel-type">Fuel Type: {{bike.fuel_type}}</p>
+                 <p class="price">Price per day: Rs.{{bike.price_per_day}}</p>
+                 <p class="price">Price per hour: Rs.{{bike.price_per_hour}}</p>
+             </div>
+             <hr>
+             <a href=""><button>Rent</button></a>
+         </div>
+
+         <!-- <div class="card">
+            <figure>
+                <img src="{% static 'images/ktm-rcb.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Bike: KTM RCB</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="price">Price: 500 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/royal-bullet.jpg' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Bike: Royal Enfiled Bullet</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="price">Price: 500 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/honda-activa.png' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Bike: Activa</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="price">Price: 500 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/honda-dio.png' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Bike: Dio</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="price">Price: 500 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+
+        <div class="card">
+            <figure>
+                <img src="{% static 'images/honda-splendor.png' %}" alt="">
+            </figure>
+            <div class="car-content">
+                <p class="car-name">Bike: Splendor</p>
+                <p class="fuel-type">Fuel Type: Petrol</p>
+                <p class="price">Price: 500 24Hrs</p>
+            </div>
+            <hr>
+            <a href=""><button>Rent</button></a>
+        </div>
+  -->
+        {% endfor %}
+        </div>
+ 
+     </section>
+
+
+    <!--Bike section end-->
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!--About Us Section start-->
+
+<section class="section-about">
+    <div class="section-content">
+        <h3>About MotoCar Rentals</h3>
+   </div>
+   <div class="container">
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/hassle-free.png' %}" alt="">
+            </div>
+            <h4>Hassle Free Rental</h4>
+            <p>Experience a seamless rental process that gets you on the road in no time—no paperwork, no worries!</p>
+        </div>
+
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/price.png' %}" alt="">
+            </div>
+            <h4>Affordable Prices</h4>
+            <p>Enjoy competitive rates that let you explore more without stretching your budget—discover the freedom of travel today!
+
+            </p>
+        </div>
+
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/comfort.png' %}" alt="">
+            </div>
+            <h4> Comfort and Convenience</h4>
+            <p>Choose from our diverse fleet of cars and bikes designed for every occasion, ensuring your journey is as comfortable as it is exciting.</p>
+        </div>
+
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/quality.png' %}" alt="">
+            </div>
+            <h4>Quality You Can Trust</h4>
+            <p>Our well-maintained vehicles and exceptional customer service guarantee a safe and enjoyable ride for every journey.</p>
+        </div>
+
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/ride.png' %}" alt="" >
+            </div>
+            <h4> Ride In Style</h4>
+            <p>Whether you prefer a sleek car or a stylish bike, we have the perfect vehicle to match your adventure and elevate your travel experience.</p>
+        </div>
+
+        <div class="about-motocar">
+            <div class="icon">
+                <img src="{% static 'images/anytime.png' %}" alt="">
+            </div>
+            <h4>Rent Anytime, Anywhere!</h4>
+            <p> With our user-friendly online booking system, you can rent your dream ride whenever and wherever it suits you best.</p>
+        </div>
+   </div>
+   <div class="about-para">
+    <p>"Welcome to MotoCar Rentals, India’s first-ever platform that combines both car and bike rentals in one convenient place! We’re thrilled to bring you an unmatched rental experience where you can choose from a wide range of cars and bikes for any adventure, all on one easy-to-use platform. Whether you're planning a weekend getaway, a daily commute, or a cross-country road trip, MotoCar Rentals offers the perfect vehicle to match your needs. Our seamless booking process, affordable rates, and diverse fleet make it easier than ever to hit the road with confidence and style. <span>"Discover the freedom to rent, ride, and explore—anytime, anywhere!"</span>
+    </p>
+   </div>
+
+</section>
+
+
+<!--About Us Section end-->
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+<!--footer section start-->
+
+<footer class="section-footer">
+    <div class="section-content">
+        <h4>MotoCar Rentals</h4>
+        <p>INDIA'S FIRST EVER BIKE & CAR RENTAL WEBSITE</p>
+    </div>
+    <div class="container">
+        <div class="first-item">
+            <p>Social Media Links:</p>
+            <div class="icon">
+                <a href="https://www.linkedin.com/in/rahul-kale-963899308" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/rahulkale12" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/" target="_blank" alt="youtube link" ><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://www.instagram.com/" target="_blank" alt="instagram" ><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="second-item">
+            <li><a href="#home">Home</a></li>
+        </div>
+
+        <div class="third-item">
+            <li><a href="/cars/">Cars</a></li>
+        </div>
+
+        <div class="fourth-item">
+            <li><a href="/bikes/">Bikes</a></li>
+        </div>
+    </div>
+    <hr>
+    <p>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2024 © MotoCar Rentals™ Ltd. All rights reserved.</p>
+</footer>
+
+
+<!--footer section end-->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

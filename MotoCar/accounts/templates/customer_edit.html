@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoCar Rentals</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+    
+</head>
+<body>
+
+
+{% include 'loggedin_header.html' %}
+
+
+<div class="form-container">
+    <h2>Edit Profile</h2>
+
+    <form class="edit-profile-form" method="post" action="/accounts/update_customer/{{edit_data.id}}/">
+        {% csrf_token %}
+        
+        <!-- Name Field -->
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" value="{{edit_data.name}}" name="name" placeholder="Enter Name" required>
+        </div>
+
+        <!-- Mobile Field -->
+        <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <input type="text" value="{{edit_data.mobile}}" name="mobile" placeholder="Enter Contact Number" required>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" value="{{edit_data.email}}" name="email" placeholder="Enter Email" required>
+        </div>
+
+        <!-- City Field -->
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" value="{{edit_data.city}}" name="city" placeholder="Enter City" required>
+        </div>
+
+        <!-- State Field -->
+        <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" value="{{edit_data.state}}" name="state" placeholder="Enter State" required>
+        </div>
+
+        <!-- Pin Code Field -->
+        <div class="form-group">
+            <label for="pincode">Pin Code</label>
+            <input type="text" value="{{edit_data.pincode}}" name="pincode" placeholder="Enter Pin Code" required>
+        </div>
+
+        <!-- Address Field -->
+        <div class="form-group full-width">
+            <label for="address">Address</label>
+            <textarea name="address" placeholder="Enter your address" rows="4" required>{{edit_data.address}}</textarea>
+        </div>
+
+        <!-- Save Changes Button -->
+        <div class="form-group full-width text-center">
+            <button type="submit">Save Changes</button>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="form-messages">
+            {% for msg in messages %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    </form>
+</div>
+
+{% include 'footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
