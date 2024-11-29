@@ -1235,7 +1235,7 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
    
     if cart.car:
         
-        final_detail = Rented_vehicles.objects.create(customer=customer, car=cart, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
+        final_detail = Rented_vehicles.objects.create(customer=customer, car=cart.car, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
 
         final_detail.save()
         
@@ -1243,7 +1243,7 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
 
     elif cart.bike:
 
-        final_detail = Rented_vehicles.objects.create(customer=customer, bike=cart, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
+        final_detail = Rented_vehicles.objects.create(customer=customer, bike=cart.bike, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
 
         final_detail.save()
 
@@ -1310,7 +1310,7 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
 
     try:
         carts = Cart.objects.filter(id__in=cart_ids_list)
-        # print(f"Carts: {carts}")
+        print(f"Carts: {carts}")
     except Cart.DoesNotExist:
         return redirect("/cars/")
     
@@ -1329,55 +1329,13 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
 
   
     for cart in carts:
-        # If the cart has both a car and a bike, create separate records for both
-        if cart.car and cart.bike:
-            print(f"Saving car: {cart.car.name}, Saving bike: {cart.bike.name}")
 
-            # Save rental record for the car
-            final_detail_car = Rented_vehicles.objects.create(
-                customer=customer,
-                car=cart,  # Assign Car instance
-                delivery_type=delivery_type,
-                pickup_date=pickup_date,
-                delivery_date=delivery_date,
-                return_date=return_date,
-                pickup_time=pickup_time,
-                delivery_time=delivery_time,
-                return_time=return_time,
-                pickup_location=pickup_location,
-                delivery_location=delivery_location,
-                license_file=license_image,
-                total_price=payment,
-                payment_id=payment_id
-            )
-            final_detail_car.save()
-
-            # Save rental record for the bike
-            final_detail_bike = Rented_vehicles.objects.create(
-                customer=customer,
-                bike=cart,  # Assign Bike instance
-                delivery_type=delivery_type,
-                pickup_date=pickup_date,
-                delivery_date=delivery_date,
-                return_date=return_date,
-                pickup_time=pickup_time,
-                delivery_time=delivery_time,
-                return_time=return_time,
-                pickup_location=pickup_location,
-                delivery_location=delivery_location,
-                license_file=license_image,
-                total_price=payment,
-                payment_id=payment_id
-            )
-            final_detail_bike.save()
-
-            print(f"Car and Bike saved: {cart.car.name}, {cart.bike.name}")
 
         # If only a bike is selected, create a rental record for the bike
-        elif cart.bike:
+        if cart.bike:
             final_detail_bike = Rented_vehicles.objects.create(
                 customer=customer,
-                bike=cart,  # Assign Bike instance
+                bike=cart.bike,  # Assign Bike instance
                 delivery_type=delivery_type,
                 pickup_date=pickup_date,
                 delivery_date=delivery_date,
@@ -1392,13 +1350,13 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
                 payment_id=payment_id
             )
             final_detail_bike.save()
-            print(f"Bike saved: {cart.bike.name}")
+            print(f"Bike saved: {cart.bike}")
 
         # If only a car is selected, create a rental record for the car
         elif cart.car:
             final_detail_car = Rented_vehicles.objects.create(
                 customer=customer,
-                car=cart,  # Assign Car instance
+                car=cart.car,  # Assign Car instance
                 delivery_type=delivery_type,
                 pickup_date=pickup_date,
                 delivery_date=delivery_date,
@@ -1413,7 +1371,7 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
                 payment_id=payment_id
             )
             final_detail_car.save()
-            print(f"Car saved: {cart.car.name}")
+            print(f"Car saved: {cart.car}")
 
     return redirect('/my_rentals/')
 

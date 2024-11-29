@@ -32,7 +32,14 @@
                     <li class="nav-item"><a href="/my_cart/" class="nav-link {% if request.path == '/my_cart/' %}active{% endif %}">My Cart</a></li>
                     <li class="nav-item"><a href="/my_rentals/" class="nav-link {% if request.path == '/my_rentals/' %}active{% endif %}">My Rentals</a></li>
                     <li class="nav-item"><a href="/accounts/customer_profile/" class="nav-link {% if request.path == '/customer_profile/' %}active{% endif %}">My Profile</a></li>
-                    <li class="nav-item"><a href="/accounts/login/" class="nav-link">Logout</a></li>
+                    <!-- <li class="nav-item"><a href="/accounts/login/" class="nav-link">Logout</a></li> -->
+                    {% if request.session.id %}
+                     <li class="nav-item"><a href="{% url 'customer_logout' %}" class="nav-link">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a href="/accounts/register/" class="nav-link  {% if request.path == '/accounts/register/' %}active{% endif %}">Register</a></li>
+                    <li class="nav-item"><a href="/accounts/login/" class="nav-link {% if request.path == '/accounts/login/' %}active{% endif %}">Login</a></li>
+                    {% endif %}
+
                 </ul>
             </nav>
         </div>

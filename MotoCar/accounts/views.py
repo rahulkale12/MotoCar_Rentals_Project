@@ -132,7 +132,7 @@ def delete_customer(request,id):
     return redirect('/accounts/login/')
 
 
-def customer_logout(request,id):
+def customer_logout(request):
     customer = request.session.get('id')
     request.session.flush()
     return redirect('/accounts/login/')

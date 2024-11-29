@@ -27,12 +27,25 @@
             <a href="{% url 'index' %}"><h1>MotoCar Rentals</h1></a>
             <nav class="navbar">
                 <ul >
-                    <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                    <!-- <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="/cars/" class="nav-link">Cars</a></li>
                     <li class="nav-item"><a href="/bikes/" class="nav-link ">Bikes</a></li>
                     <li class="nav-item"><a href="/my_rentals/" class="nav-link">My Rentals</a></li>
                     <li class="nav-item"><a href="/accounts/register/" class="nav-link">Register</a></li>
-                    <li class="nav-item"><a href="/accounts/login/" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="/accounts/login/" class="nav-link">Login</a></li> -->
+                    <li class="nav-item"><a href="{% url 'index' %}" class="nav-link  {% if request.path == '/' %}active{% endif %}">Home</a></li>
+                    <li class="nav-item"><a href="/cars/" class="nav-link  {% if request.path == '/cars/' %}active{% endif %}">Cars</a></li>
+                    <li class="nav-item"><a href="/bikes/" class="nav-link {% if request.path == '/bikes/' %}active{% endif %}">Bikes</a></li>
+                    {% if request.session.id %}
+                    <li class="nav-item"><a href="/my_cart/" class="nav-link {% if request.path == '/my_cart/' %}active{% endif %}">My Cart</a></li>
+                    <li class="nav-item"><a href="/my_rentals/" class="nav-link {% if request.path == '/my_rentals/' %}active{% endif %}">My Rentals</a></li>
+                    <li class="nav-item"><a href="/accounts/customer_profile/" class="nav-link {% if request.path == '/customer_profile/' %}active{% endif %}">My Profile</a></li>
+                    
+                    <li class="nav-item"><a href="{% url 'customer_logout' %}" class="nav-link">Logout</a></li>
+                   {% else %}
+                   <li class="nav-item"><a href="/accounts/register/" class="nav-link  {% if request.path == '/accounts/register/' %}active{% endif %}">Register</a></li>
+                   <li class="nav-item"><a href="/accounts/login/" class="nav-link {% if request.path == '/accounts/login/' %}active{% endif %}">Login</a></li>
+                   {% endif %}
                 </ul>
             </nav>
         </div>

@@ -28,6 +28,7 @@ class Car(models.Model):
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
     
+    
 
     def __str__(self):
         return f"{self.name} ({self.company})- {self.city}, {self.state}"
@@ -63,8 +64,8 @@ class Cart(models.Model):
 
 class Rented_vehicles(models.Model):
     customer = models.ForeignKey(Customer_register, on_delete=models.CASCADE)
-    car = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True , related_name="car_rent")
-    bike = models.ForeignKey(Cart, on_delete=models.CASCADE,  null=True, blank=True, related_name="bike_rent")
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, null=True, blank=True , related_name="car_rent")
+    bike = models.ForeignKey(Bike, on_delete=models.CASCADE,  null=True, blank=True, related_name="bike_rent")
     delivery_type = models.CharField(max_length=50, choices=[('pickup', 'Self Pickup'),('delivery','Delivery')],null=True, blank=True)
     pickup_date = models.DateField(null=True, blank=True)
     delivery_date = models.DateField(null=True, blank=True)
