@@ -36,6 +36,7 @@
                     <li class="nav-item"><a href="{% url 'index' %}" class="nav-link  {% if request.path == '/' %}active{% endif %}">Home</a></li>
                     <li class="nav-item"><a href="/cars/" class="nav-link  {% if request.path == '/cars/' %}active{% endif %}">Cars</a></li>
                     <li class="nav-item"><a href="/bikes/" class="nav-link {% if request.path == '/bikes/' %}active{% endif %}">Bikes</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact Us</a></li>
                     {% if request.session.id %}
                     <li class="nav-item"><a href="/my_cart/" class="nav-link {% if request.path == '/my_cart/' %}active{% endif %}">My Cart</a></li>
                     <li class="nav-item"><a href="/my_rentals/" class="nav-link {% if request.path == '/my_rentals/' %}active{% endif %}">My Rentals</a></li>
@@ -105,7 +106,7 @@
                 <p class="price">Price per hour: Rs.{{car.price_per_hour}}</p>
             </div>
             <hr>
-            <a href=""><button>Rent</button></a>
+            <a href="{% url 'add_car_to_cart' car.id %}"><button>Rent</button></a>
         </div>
 
         <!-- <div class="card">
@@ -206,7 +207,7 @@
                  <p class="price">Price per hour: Rs.{{bike.price_per_hour}}</p>
              </div>
              <hr>
-             <a href=""><button>Rent</button></a>
+             <a href="{% url 'add_bike_to_cart' bike.id %}"><button>Rent</button></a>
          </div>
 
          <!-- <div class="card">
@@ -383,6 +384,9 @@
 
         <div class="fourth-item">
             <li><a href="/bikes/">Bikes</a></li>
+        </div>
+        <div class="fifth-item">
+            <li><a href="/contact/">Contact Us</a></li>
         </div>
     </div>
     <hr>

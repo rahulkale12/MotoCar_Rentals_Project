@@ -28,5 +28,7 @@ urlpatterns = [
 
     path("my_rentals/",views.my_rentals, name="my_rentals"),
 
+    path('contact/', views.contact, name="contact"),
+
 
 ]

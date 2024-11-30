@@ -83,8 +83,13 @@ class Rented_vehicles(models.Model):
          return f"Rented Vehicle for {self.customer.name}"
 
 
+class Contact_US(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    subject = models.CharField(max_length=200)
+    message = models.CharField(max_length=1000)
 
 
-
-
-
+    def __str__(self):
+        return f"Name :{self.name}"
+     

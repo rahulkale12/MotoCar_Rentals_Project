@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from App.models import Car, Bike,State,City,Cart, Rented_vehicles
+from App.models import Car, Bike,State,City,Cart, Rented_vehicles, Contact_US
 from accounts.models import Customer_register
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
@@ -1415,7 +1415,24 @@ def remove_from_cart(request, id):
     return redirect("/my_cart/")
 
 
-  
+#####Contact View##############################################################################################
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        try:
+            Contact_US.objects.create(name=name, email=email, subject=subject, message=message)
+            messages.info(request, "Thank you for Contacting MotoCar Rentals will shortly get back to you, till than Happy Renting!!")
+            return redirect('/contact/')
+        except:
+            messages.info(request, "Cannot send message , Please try again after some time.")
+            return redirect('/contact/')
+           
+    return render(request, "contact.html")
 
 
 # def remove_from_rented_vehicle(request, id):

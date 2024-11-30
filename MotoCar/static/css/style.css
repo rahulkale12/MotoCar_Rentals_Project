@@ -541,6 +541,7 @@ button:hover {
 
 
 
+
 .section-about img {
     padding: 1rem; /* Adjusted padding for the images */
     width: 15rem; /* Set a consistent width for images */
@@ -591,6 +592,206 @@ button:hover {
 
 /* ---------------------------------------------------------------------------------------------------------------------------------------------*/
 
+/* Contact page styling Start */
+
+
+.contact{
+    width: 100%;
+    font-family: "Poppins",sans-serif;
+    padding: 0px 20px 50px;
+}
+
+.contact .title{
+    font-family: "Ubuntu", sans-serif;
+    font-size: 42px;
+    margin-bottom: 32px;
+    text-align: center;
+    padding: 60px;
+    text-decoration: underline;
+}
+
+.contact .max-width{
+    width: 100%;
+}
+
+.contact-content{
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    gap: 50px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.contact .contact-content .column-left{
+    width: 100%;
+    box-sizing: border-box;
+    
+}
+
+.contact .contact-content .column-left .text{
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.contact .contact-content .column-left p{
+    font-size: 18px;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.contact .contact-content .column-left .icons{
+    margin: 10px 0;
+}
+
+
+.contact .contact-content .column-left .icons .row{
+    display: flex !important;
+    height: 80px;
+    align-items: center;
+   
+    & .info{
+        display: flex;
+        align-items: center;
+
+        & .subheading{
+            margin-top: 3px;
+            margin-left: 5px;
+        }
+
+    }
+}
+
+.contact .contact-content .column-left .icons .row i{
+   
+    font-size: 20px;
+    color: crimson;
+
+}
+
+
+.contact .contact-content .column-left .icons .info .head{
+    font-size: 19px;
+   font-weight: 700;
+
+}
+
+.contact .contact-content .column-left .icons .info .subheading{
+
+    font-size: 18px;
+    color: #222;
+ 
+ }
+
+.contact .contact-content .column-right{
+    width: 100%;
+    box-sizing: border-box;
+    
+ }
+
+ .contact .column-right .text{
+    font-size: 24px;
+    font-weight: 600;
+ }
+
+.contact .contact-content .column-right form .fields{
+    display: flex;
+
+ }
+
+.contact .column-right form .field,
+.contact .column-right form .fieldS .field{
+        width: 100%;
+        height: 100%;
+ }
+
+ .contact .column-right form .textarea{
+    height: 80px;
+ }
+
+.contact .column-right form .field input{
+    width: 80%;
+    height: 100%;
+    border: 2px solid lightgrey;
+    outline: none;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 15px 15px;
+    font-size: 18px;
+    font-family: "Poppins",sans-serif;  
+
+}
+
+.contact .column-right form .field textarea{
+    width: 80%;
+    height: 100%;
+    border: 2px solid lightgrey;
+    outline: none;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 15px 15px;
+    font-size: 18px;
+    font-family: "Poppins",sans-serif;  
+
+}
+
+.contact .column-right form .button {
+    width: 80%;
+    display: flex;
+    justify-content: start;
+    margin-top: 50px;
+    box-sizing: border-box;
+    
+    
+}
+
+.contact .column-right form .button button {
+    width: 200px;
+    background-color: crimson;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    outline: none;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    
+}
+.contact .column-right form .button button:hover {
+    background-color: black;
+}
+
+.contact .contact-content form input:focus, textarea:focus{
+    border-color: crimson;
+}
+
+.contact .contact-content form input,textarea{
+    text-transform: capitalize;
+}
+
+
+.contact .map{
+    width: 50%;
+    height: auto;
+    margin-left: 5rem;
+}
+
+.contact .map iframe{
+    width: 500px;
+    height: 500px;
+    
+}
+
+
+
+
+/* conatct page styling end
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------- */
 
 /* Footer section start */
 
@@ -625,7 +826,7 @@ button:hover {
 
 .section-footer .container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     justify-items: center;
     align-items: center;
     gap: 30px;
