@@ -1,17 +1,3 @@
-/* navbar position adjustment */
-
-.section-navbar .logo{
-    margin-left: -25rem;
-    
-}
-.section-navbar .container a h1{
-    color: white;
-    font-size: bold;
-    font-style: italic;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 4rem;
-    margin-left: -25rem !important;
-}
 
 /*---------------------------------------------*/
 

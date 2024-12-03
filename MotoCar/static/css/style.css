@@ -53,7 +53,7 @@ li{
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     background-color: rgb(7, 7, 7);
-    /* margin-bottom: 5rem; */
+
     box-sizing: border-box;
    
     
@@ -67,64 +67,57 @@ li{
     font-family: 'Times New Roman', Times, serif;
     font-size: 4rem;
     position: relative;
-    margin-left: -15rem ;
+    margin-left: 1rem ;
+    white-space: nowrap;
 
-    /* margin-left: -23rem; */
-    /* white-space: nowrap; */
-   
+
 }
 
 
 .section-navbar .container{
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.8rem 4rem;
-    margin-right: 2rem; */
+  
     width: 100%;
     max-width: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     
-    padding: 1.8rem 4rem;
+    padding: 1.8rem 2rem;
     position: relative; 
     box-sizing: border-box;
-    
+    /* flex-wrap: wrap; */
 
-    & .logo img{
-        border-radius: 5px;
-        border: 1px solid white;
-        box-shadow: 1px 1px 10px white;
-        width: 125px;
-       
-    }
 }
 
- /* .section-navbar .logo{
-    
-    margin-right: -18rem;
-    
-}  */
+.section-navbar .logo img{
+    border-radius: 5px;
+    border: 1px solid white;
+    box-shadow: 1px 1px 10px white;
+    width: 125px;
+    height: auto;
+   
+}
+
+
   
 
 
 .section-navbar .navbar ul{
-    /* display: flex;
-    gap: 3.2rem; */
+    
  
     display: flex;
-    gap: 3.2rem;
-    margin: 0 auto; /* Align navigation to the far right */
+    gap: 2rem;
+    margin: 0 auto; 
  
     
 
     & li a{
         color: white;
-        font-size: 2.4rem;
+        font-size: 2.2rem;
         font-weight: bold;
         display: inline-block;
         position: relative;
+        padding: 0.5rem 1rem;
         font-style: italic;
         
 

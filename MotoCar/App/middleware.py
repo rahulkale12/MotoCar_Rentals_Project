@@ -9,7 +9,7 @@ def auth_middleware(get_response):
             return redirect('/accounts/login/')
         
      
-        elif ((request.path == '/accounts/login/' or request.path == '/accounts/register/') and request.session.get('id') is not None):
+        if ((request.path == '/accounts/login/' or request.path == '/accounts/register/') and request.session.get('id') is not None):
             return redirect('/accounts/customer_profile/')
         
         
