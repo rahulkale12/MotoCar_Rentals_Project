@@ -1376,13 +1376,20 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
     return redirect('/my_rentals/')
 
 
-    
-
-
+### My rentals view #############################################################################################################  
 
 
 def my_rentals(request):
-    return render(request, "my_rentals.html")
+    cutsomer_id = request.session.get('id')
+    if not cutsomer_id:
+        return redirect('/accounts/login/')
+    try:
+        customer = Customer_register.objects.get(id = cutsomer_id)
+    except Customer_register.DoesNotExist:
+        return redirect('/accounts/register/')
+    
+    rentals = Rented_vehicles.objects.filter(customer=customer)
+    return render(request, "my_rentals.html",{'rentals':rentals})
 
 
 
@@ -1413,6 +1420,9 @@ def remove_from_cart(request, id):
         messages.info(request, "Item removed successfully.")
 
     return redirect("/my_cart/")
+
+
+
 
 
 #####Contact View##############################################################################################
