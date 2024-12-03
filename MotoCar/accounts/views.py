@@ -3,6 +3,7 @@ from accounts.models import Customer_register, Profile_pic
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 def register(request):
@@ -76,7 +77,7 @@ def profile_picture(request,id):
             return redirect('/accounts/customer_profile/')
     return render(request, "customer_profile.html")
 
-
+@never_cache
 def customer_profile(request):
     user_id= request.session.get('id')
     if not user_id:                               #i faced an error Customer.Doesnotexist so keeping in try except to test the templates and views

@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.conf import settings
 import os
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.cache import never_cache
 
 
 # Create your views here.
@@ -104,11 +105,6 @@ def bikes(request):
         
    
 
-def my_rentals(request):
-    return render(request, "my_rentals.html")
-
-
-
 
 def add_car_to_cart(request, car_id):
     customer_id = request.session.get('id')
@@ -170,7 +166,7 @@ def add_bike_to_cart(request, bike_id):
 
 
 
-
+@never_cache
 def my_cart(request):
     customer_id = request.session.get('id')
     if not customer_id:
@@ -421,11 +417,21 @@ def my_cart(request):
 
 
 
-
+@never_cache
 def checkout(request,id):
     customer_id = request.session.get('id')
-    customer = Customer_register.objects.get(id=customer_id)
-    cart = Cart.objects.get(id=id)
+    if not customer_id:
+        return redirect('/accounts/login/')
+    try:
+         customer = Customer_register.objects.get(id=customer_id)
+    except Customer_register.DoesNotExist:
+        return redirect('/accounts/register/')
+    
+    try:
+
+        cart = Cart.objects.get(id=id)
+    except Cart.DoesNotExist:
+        return redirect('/my_cart/')
     if cart.car:
             # print(cart.car.city.name)
             pickup_location = cart.car.city.name if cart.car.city else ""
@@ -618,7 +624,7 @@ def validate_form_multiple(request):
 
 
             pickup_location = pickup_location if pickup_location else "None"
-            license_image = license_image
+            # license_image = license_image
 
             
             rent_duration = 0
@@ -712,7 +718,7 @@ def validate_form_multiple(request):
 
 
             delivery_location = delivery_location if delivery_location else "None"
-            license_image = license_image
+            # license_image = license_image
 
 
             rent_duration =0
@@ -1378,7 +1384,7 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
 
 ### My rentals view #############################################################################################################  
 
-
+@never_cache
 def my_rentals(request):
     cutsomer_id = request.session.get('id')
     if not cutsomer_id:
@@ -1445,28 +1451,7 @@ def contact(request):
     return render(request, "contact.html")
 
 
-# def remove_from_rented_vehicle(request, id):
-#     try:
-#         # Try to get the rented vehicle with the given ID
-#         rented_vehicle = Rented_vehicles.objects.get(id=id)
-        
-#         # Check if the logged-in user is the one who rented this vehicle (optional)
-#         if rented_vehicle.customer != request.user:
-#             messages.error(request, "You are not authorized to delete this rented vehicle.")
-#             return redirect('/my_rentals/')
-        
-#         # If found, delete the rented vehicle
-#         rented_vehicle.delete()
-        
-#         # Add a success message
-#         messages.success(request, "Rented vehicle removed successfully.")
-#     except Rented_vehicles.DoesNotExist:
-#         # If the rented vehicle doesn't exist, show an error message
-#         messages.error(request, "Rented vehicle not found.")
-    
-#     # Redirect to the my_cart page or any other page you'd prefer
-#     return redirect('/my_cart/')  # You can redirect to another page if needed
-        
+
 
 
 
