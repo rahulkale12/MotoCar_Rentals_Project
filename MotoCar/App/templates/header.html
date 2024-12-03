@@ -23,8 +23,9 @@
         <div class="container">
             <div class="logo">
                 <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" alt="logo" width="100px" height="auto"></a>
+                <a href="{% url 'index' %}"><h1>MotoCar Rentals</h1></a>
             </div>
-            <a href="{% url 'index' %}"><h1>MotoCar Rentals</h1></a>
+            <!-- <a href="{% url 'index' %}"><h1>MotoCar Rentals</h1></a> -->
             <nav class="navbar">
                 <ul >
                     <li class="nav-item"><a href="{% url 'index' %}" class="nav-link  {% if request.path == '/' %}active{% endif %}">Home</a></li>

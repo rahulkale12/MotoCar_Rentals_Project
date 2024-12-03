@@ -65,7 +65,7 @@ li{
     font-size: bold;
     font-style: italic;
     font-family: 'Times New Roman', Times, serif;
-    font-size: 4rem;
+    font-size: 3.4rem;
     position: relative;
     margin-left: 1rem ;
     white-space: nowrap;
@@ -89,11 +89,17 @@ li{
 
 }
 
+.section-navbar .logo{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .section-navbar .logo img{
     border-radius: 5px;
     border: 1px solid white;
     box-shadow: 1px 1px 10px white;
-    width: 125px;
+    width: 80px;
     height: auto;
    
 }
@@ -217,9 +223,9 @@ li{
 }
 
 .btn-white {
-    background-color: #ffffff; 
-    color: #333; 
-    border: 1px solid #333; 
+    background-color: #f93d3d; 
+    color: #fff; 
+    border: 1px solid #fff; 
     transition: background-color 0.3s ease, color 0.3s ease; 
     margin-right: 3rem;
     width: 15rem;
@@ -229,7 +235,7 @@ li{
 }
 
 .btn-white:hover {
-    background-color: #f93d3d; 
+    background-color: #111 ; 
     color: #ffffff; 
 }
 
@@ -800,7 +806,7 @@ button:hover {
 .section-footer .section-content {
     width: 50rem;
     margin: 0 auto;
-    margin-top: -1rem;
+    /* margin-top: -1rem; */
 }
 
 .section-footer h4 {
@@ -823,8 +829,9 @@ button:hover {
     justify-items: center;
     align-items: center;
     gap: 30px;
-    margin-top: 2rem;
-    margin-bottom: 3rem;
+    /* margin-top: 2rem;
+    margin-bottom: 3rem; */
+    margin: 1rem auto;
 }
 
 .section-footer .first-item,
@@ -859,7 +866,7 @@ button:hover {
 }
 
 .section-footer .icon a {
-    font-size: 3rem; /* Larger icon size */
+    font-size: 3rem; 
     color: #ffffff;
     display: inline-flex;
     align-items: center;
@@ -891,18 +898,16 @@ button:hover {
 .section-footer hr {
     border: none;
     border-top: 1px solid white;
-    margin: 2rem 0;
+    margin: 10px 0;
 }
 
 .section-footer p:last-of-type {
     font-size: 15px;
     color: white;
     text-align: center;
-    margin-top: 1rem;
-    line-height: 1.4;
+    /* margin-top: 1rem; */
+    line-height: 1;
 }
-
-
 /* Footer section end */
 
 /*--------------------------------------------------------------------------------------------------------------------------------------*/
