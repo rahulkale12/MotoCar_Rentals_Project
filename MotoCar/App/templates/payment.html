@@ -199,7 +199,7 @@
     let return_date = document.getElementById('return_date').value
     let return_time = document.getElementById('return_time').value
 
-    let license_image = "{{filename}}"
+    // let license_image = "{{filename}}"
     
     // let license_image = document.getElementById('license_image').value
     // let encoded_license_image = encodeURIComponent(license_image);
@@ -266,7 +266,7 @@
       }
     },
     "handler": function (response) {
-      window.location.href = `http://localhost:8000/success_single/{{ cart.id }}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${license_image}/${payment}/${response.razorpay_payment_id}`;
+      window.location.href = `http://localhost:8000/success_single/{{ cart.id }}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${payment}/${response.razorpay_payment_id}`;
         
     },
     "modal": {

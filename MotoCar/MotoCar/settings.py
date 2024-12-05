@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'App.middleware.auth_middleware',
+    # 'App.middleware.auth_middleware',
 ]
 
 ROOT_URLCONF = 'MotoCar.urls'
@@ -141,6 +141,16 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 RAZORPAY_KEY_ID = "rzp_test_uno8WYY290g5GE"
 RAZORPAY_KEY_SECRET = "DBpPg60ISFuspO3ejWsJruma"
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'work.rk12@gmail.com'
+EMAIL_HOST_PASSWORD = 'olkp uppp rtau jeen'
+DEFAULT_FROM_EMAIL = 'MotoCar Rentals <work.rk12@gmail.com>'
 
 
 

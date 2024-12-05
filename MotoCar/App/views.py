@@ -550,15 +550,24 @@ def validate_form_multiple(request):
 
         today_date = timezone.now().date()
 
+        # if license_image:
+        #     # Save the image to the 'licenceFile' directory inside the 'media' folder
+        #     fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
+        #     filename = fs.save(license_image.name, license_image)
+        #     encoded_filename = quote(filename)
+        #     # license_image_url = fs.url(filename)  # Get the URL of the uploaded image
+        # else:
+        #     # license_image_url = None
+        #     filename = None
+
+
         if license_image:
-            # Save the image to the 'licenceFile' directory inside the 'media' folder
             fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
             filename = fs.save(license_image.name, license_image)
-            # license_image_url = fs.url(filename)  # Get the URL of the uploaded image
+            request.session['license_image'] = filename
         else:
-            # license_image_url = None
-            filename = None
-
+            messages.info(request, "License file is Mandatory")
+            return render(request,'checkouts.html',{'carts':carts})
        
 
 
@@ -650,7 +659,7 @@ def validate_form_multiple(request):
 
             cart_ids = ','.join([str(cart.id) for cart in carts])
 
-            return redirect(f"/payment_multiple/{cart_ids}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/{filename}/")
+            return redirect(f"/payment_multiple/{cart_ids}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/")
                                       
        
 
@@ -741,7 +750,7 @@ def validate_form_multiple(request):
 
             cart_ids = ','.join([str(cart.id) for cart in carts])
 
-            return redirect(f"/payment_multiple/{cart_ids}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/{filename}")
+            return redirect(f"/payment_multiple/{cart_ids}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/")
      
 
     return render(request, "checkouts.html" ,{"carts":carts})
@@ -787,15 +796,25 @@ def validate_form_single(request,id):
 
         today_date = timezone.now().date()
 
+        
       
+        # if license_image:
+        #     # Save the image to the 'licenceFile' directory inside the 'media' folder
+        #     fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
+        #     filename = fs.save(license_image.name, license_image)
+        #     # license_image_url = fs.url(filename)  # Get the URL of the uploaded image
+        # else:
+        #     # license_image_url = None
+        #     filename = None
+
+         # Save the license image and store in session
         if license_image:
-            # Save the image to the 'licenceFile' directory inside the 'media' folder
             fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
             filename = fs.save(license_image.name, license_image)
-            # license_image_url = fs.url(filename)  # Get the URL of the uploaded image
+            request.session['license_image'] = filename
         else:
-            # license_image_url = None
-            filename = None
+            messages.info(request, "License file is Mandatory")
+            return render(request,'checkout.html',{'cart':cart})
 
         
          # Pickup code
@@ -886,7 +905,7 @@ def validate_form_single(request,id):
            
             
             
-            return redirect(f"/payment/{cart.id}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/{filename}/")
+            return redirect(f"/payment/{cart.id}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/")
         
        
 
@@ -981,7 +1000,7 @@ def validate_form_single(request,id):
             
 
 
-            return redirect(f"/payment/{cart.id}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/{filename}/")
+            return redirect(f"/payment/{cart.id}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/")
             
      
 
@@ -993,18 +1012,10 @@ def validate_form_single(request,id):
 
 
 
-def payment(request, cart_id, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time,filename ):
+def payment(request, cart_id, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time):
 
 
-    # delivery_date = None if delivery_date == "None" else datetime.strptime(delivery_date, "%Y-%m-%d").date() if delivery_date != "None" else None
-    # delivery_time = None if delivery_time == "None" else datetime.strptime(delivery_time, "%H:%M:%S").time() if delivery_time != "None" else None
-    # pickup_date = None if pickup_date == "None" else datetime.strptime(pickup_date, "%Y-%m-%d").date() if pickup_date != "None" else None
-    # pickup_time = None if pickup_time == "None" else datetime.strptime(pickup_time, "%H:%M:%S").time() if pickup_time != "None" else None
-    # pickup_location = None if pickup_location == "None" else pickup_location
-    # return_date = None if return_date == "None" else datetime.strptime(return_date, "%Y-%m-%d").date() if return_date != "None" else None
-    # return_time = None if return_time == "None" else datetime.strptime(return_time, "%H:%M:%S").time() if return_time != "None" else None
-   
-    
+
     if delivery_date == "None":
         delivery_date = None
     else:
@@ -1045,7 +1056,7 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
     else:
         return_time = datetime.strptime(return_time, "%H:%M:%S").time()
 
-
+    license_image = request.session.get('license_image')
 
 
     try:
@@ -1068,7 +1079,8 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
                            "return_date":return_date,
                            "return_time":return_time, 
                         #    "license_image":license_image_url 
-                            "filename":filename
+                            # "filename":filename
+                            'license_image':license_image
                             
                            }
             
@@ -1082,10 +1094,9 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
 ###########################################################################################################################################
 
 
+def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time ):
 
-def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time,filename ):
-
-
+    
    
     if delivery_date == "None":
         delivery_date = None
@@ -1127,7 +1138,9 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
     else:
         return_time = datetime.strptime(return_time, "%H:%M:%S").time()
 
-    
+
+
+    # license_image = request.session.get('license_image')
 
     
 
@@ -1155,7 +1168,7 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
                            "pickup_location":pickup_location,
                            "return_date":return_date,
                            "return_time":return_time, 
-                           "filename":filename,
+                        #    "license_image":license_image,
                            "cart_ids":cart_ids_str  
                          }
             
@@ -1169,13 +1182,15 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
 #################################################################################################################################################
 
 
-def success_single(request,cart_id, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, license_image, payment,payment_id):
+def success_single(request,cart_id, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
   
+    license_image = request.session.pop('license_image', None)
+
     if license_image:
         # Reconstruct the full URL to the image stored in 'media/licenceFile'
         license_image = os.path.join(settings.MEDIA_URL, 'licenceFile', license_image)
-    else:
-        license_image = None
+    # else:
+    #     license_image = None
     
   
 
@@ -1222,13 +1237,17 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
 
 
     customer_id = request.session.get('id')
+    
+    
    
     if not customer_id:
+        print("Session expired or customer_id is missing.")
         return redirect("/accounts/login/")
     
     try:
         customer = Customer_register.objects.get(id=customer_id)
     except Customer_register.DoesNotExist:
+        print(f"Customer with ID {customer_id} does not exist.")
         return redirect("/accounts/login/")
     
 
@@ -1263,13 +1282,18 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
 #############################################################################################################################
 
 
-def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, license_image, payment,payment_id):
+def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
+    
+    license_image = request.session.pop('license_image', None)
+
     if license_image:
-        license_image = os.path.join(settings.MEDIA_URL, "licenceFile", license_image)
+        # Reconstruct the full URL to the image stored in 'media/licenceFile'
+        license_image = os.path.join(settings.MEDIA_URL, 'licenceFile', license_image)
     else:
         license_image = None
 
-    
+
+
     
     if delivery_date == "None":
         delivery_date = None

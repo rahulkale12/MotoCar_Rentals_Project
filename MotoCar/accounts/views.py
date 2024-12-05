@@ -2,8 +2,9 @@ from django.shortcuts import render,redirect
 from accounts.models import Customer_register, Profile_pic
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist,ValidationError
 from django.views.decorators.cache import never_cache
+from django.core.validators import validate_email
 
 # Create your views here.
 def register(request):
@@ -17,6 +18,13 @@ def register(request):
         address = request.POST['address']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, "Invalid email format. Please enter a valid email.")
+            return render(request, "customer_register.html")
+        
 
         if password == confirm_password :
             if Customer_register.objects.filter(email=email).exists():
@@ -110,6 +118,12 @@ def update_customer(request,id):
         state = request.POST['state']
         pincode = request.POST['pincode']
         address = request.POST['address']
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, "Invalid email format. Please enter a valid email.")
+            return render(request, "edit_customer.html")
+        
         get_customer = Customer_register.objects.get(id=id)
         get_customer.name = name
         get_customer.email = email
