@@ -567,7 +567,8 @@ def validate_form_multiple(request):
             request.session['license_image'] = filename
         else:
             messages.info(request, "License file is Mandatory")
-            return render(request,'checkouts.html',{'carts':carts})
+            # return render(request,'checkouts.html',{'carts':carts})
+            return redirect('/checkouts/')
        
 
 
@@ -579,21 +580,24 @@ def validate_form_multiple(request):
             # print("hellorahul",delivery_type)
             if not pickup_date:
                 messages.info(request, "Please select Pickup Date")
-                return render(request, "checkouts.html", {"carts": carts})
+                # return render(request, "checkouts.html", {"carts": carts})
+                return redirect('/checkouts/')
             
             try:
                 pickup_date = datetime.strptime(pickup_date , '%Y-%m-%d' ).date()
 
                 if pickup_date < today_date:
                         messages.info(request, "Pickup date cannot be in past.")
-                        return render(request, "checkouts.html" ,{"carts":carts})
+                        # return render(request, "checkouts.html" ,{"carts":carts})
+                        return redirect('/checkouts/')
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
 
                     if return_date <= pickup_date:
                         messages.info(request, "return date must be after pickup date")
-                        return render(request, "checkouts.html",{"carts":carts})
+                        # return render(request, "checkouts.html",{"carts":carts})
+                        return redirect('/checkouts/')
                     
                 
                 pickup_date = pickup_date
@@ -603,16 +607,19 @@ def validate_form_multiple(request):
    
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
-                return render(request, "checkouts.html",{"carts":carts})
+                # return render(request, "checkouts.html",{"carts":carts})
+                return redirect('/checkouts/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
-                    return render(request, "checkouts.html" , {"carts":carts})
+                    # return render(request, "checkouts.html" , {"carts":carts})
+                    return redirect('/checkouts/')
                 
 
             if not return_time and pickup_time:
                 messages.info(request, "Please select pickup and return time")
-                return render(request, "checkouts.html" ,{"carts":carts})
+                # return render(request, "checkouts.html" ,{"carts":carts})
+                return redirect('/checkouts/')
             
             try:
                 if pickup_time != "None":
@@ -625,7 +632,8 @@ def validate_form_multiple(request):
                     
             except ValueError:
                 messages.info(request, "Invalid date format, please use HH:MM")
-                return render(request, "checkouts.html" ,{"carts":carts})
+                # return render(request, "checkouts.html" ,{"carts":carts})
+                return redirect('/checkouts/')
             
             delivery_location = "None"
             delivery_time = "None"
@@ -642,7 +650,8 @@ def validate_form_multiple(request):
                 rent_duration += (return_date - pickup_date).days
             else:
                 messages.info(request, "please select dates to calculate total_price")
-                return render(request, "checkout.html", {"carts":carts})
+                # return render(request, "checkout.html", {"carts":carts})
+                return redirect('/checkouts/')
             
         
             total_price = 0
@@ -668,7 +677,8 @@ def validate_form_multiple(request):
             # print("king",delivery_type)
             if not delivery_date:
                 messages.info(request, "Please select Delivery Date")
-                return render(request, "checkouts.html" , {"carts": carts})
+                # return render(request, "checkouts.html" , {"carts": carts})
+                return redirect('/checkouts/')
             
             try:
                  
@@ -676,14 +686,18 @@ def validate_form_multiple(request):
 
                 if delivery_date < today_date:
                     messages.info(request, "Delivery date cannot pe past to preset date")
-                    return render(request, "checkouts.html",{"carts":carts})
+                    # return render(request, "checkouts.html",{"carts":carts})
+                    return redirect('/checkouts/')
+                    
+                    
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
 
                     if return_date <= delivery_date:
                         messages.info(request, "return date cannot be same as delivery date")
-                        return render(request, "checkouts.html",{"carts":carts})
+                        # return render(request, "checkouts.html",{"carts":carts})
+                        return redirect('/checkouts/')
                     
                 
                 delivery_date = delivery_date if delivery_date else "None"
@@ -692,17 +706,20 @@ def validate_form_multiple(request):
                 
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
-                return render(request, "checkouts.html",{"carts":carts})
+                # return render(request, "checkouts.html",{"carts":carts})
+                return redirect('/checkouts/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
-                    return render(request, "checkouts.html" , {"carts":carts})
+                    # return render(request, "checkouts.html" , {"carts":carts})
+                    return redirect('/checkouts/')
                 
             
 
             if not return_time and delivery_time:
                 messages.info(request, "Please select pickup and return time") 
-                return render(request, "checkouts.html", {"carts":carts})
+                # return render(request, "checkouts.html", {"carts":carts})
+                return redirect('/checkouts/')
             
             try:
                 if delivery_time != "None":
@@ -713,12 +730,14 @@ def validate_form_multiple(request):
                     
             except ValueError:
                 messages.info(request, "Invalid date format, please use HH:MM")
-                return render(request, "checkouts.html" ,{"carts":carts})
+                # return render(request, "checkouts.html" ,{"carts":carts})
+                return redirect('/checkouts/')
             
             
             if not delivery_location or delivery_location.lower() == 'none':
                 messages.error(request, "Delivery location is required when delivery is selected.")
-                return render(request, "checkouts.html" , {"carts": carts})
+                # return render(request, "checkouts.html" , {"carts": carts})
+                return redirect('/checkouts/')
             
            
             pickup_location = "None"
@@ -1263,6 +1282,7 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
         final_detail = Rented_vehicles.objects.create(customer=customer, car=cart.car, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
 
         final_detail.save()
+        cart.delete()
         
         return redirect('/my_rentals/')
 
@@ -1271,8 +1291,10 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
         final_detail = Rented_vehicles.objects.create(customer=customer, bike=cart.bike, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
 
         final_detail.save()
+        cart.delete()
 
         return redirect('/my_rentals/')
+    
     
     return render(request,"payment.html")
     
@@ -1402,6 +1424,8 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
             )
             final_detail_car.save()
             print(f"Car saved: {cart.car}")
+
+        cart.delete()
 
     return redirect('/my_rentals/')
 

@@ -50,11 +50,13 @@
     width: 100%; /* Form takes 35% of the container */
     height: 100vh;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px 20px; 
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     /* margin-right: 20rem; */
+    
+   
 }
 
 
@@ -95,5 +97,7 @@
 
 
 .msg h2{
+    
     color: crimson;
+    
 }

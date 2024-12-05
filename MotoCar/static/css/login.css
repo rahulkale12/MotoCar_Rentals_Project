@@ -120,7 +120,16 @@ body {
 
 
 
+.container .home-link{
+    text-decoration-color: crimson ;
+    color: white;
+    font-size: 12px;
+    margin-bottom: 15px;
 
+    &:hover{
+        font-style: italic;
+    }
+}
 
 p{
     text-align: center;

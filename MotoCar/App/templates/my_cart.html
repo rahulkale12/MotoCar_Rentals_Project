@@ -74,7 +74,12 @@
     <div class="msg-container">
     {% if request.session.cart_empty %}
     <h2>Cart is empty</h2>
+    {% else %}
+        {% if carts|length == 0 %}
+        <h2>Cart is empty</h2>
+        {% endif %}
     {% endif %}
+    
     {% for msg in messages %}
     <h2 >{{msg}}</h2>
     {% endfor %}
