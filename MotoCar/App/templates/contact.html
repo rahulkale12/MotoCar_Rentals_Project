@@ -10,7 +10,7 @@
             <div class="column-left">
                 <div class="text">Get In Touch</div>
                 <p>MotoCar Rentals calling out all local dealers who does not have their website but want to grow their business around the country. MotoCar rentals has potential to grow your business by 70-80%.
-                   So, Who are you waiting for? Contact us and gorw you rental business with INDIA's FIRST EVER CAR & BIKE RENTALS.
+                   So, Who are you waiting for? Contact us and gorw you rental business with INDIA's FINEST EVER CAR & BIKE RENTALS.
                 </p>
                 <div class="icons">
                     <div class="row">
@@ -40,6 +40,9 @@
             </div>
 
             <div class="column-right">
+                {% for msg in messages %}
+                        <h3>{{msg}}</h3>
+                    {% endfor %}
                 <div class="text">Message Us</div>
                 <form action="/contact/" method="post">
                     {% csrf_token %}
@@ -62,9 +65,7 @@
                         </div>
                         
                 </form>
-                    {% for msg in messages %}
-                        <h2>{{msg}}</h2>
-                    {% endfor %}
+                    
             </div>
         </div>
     </div>

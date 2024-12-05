@@ -222,7 +222,24 @@ li{
     
 }
 
-.btn-white {
+.btn-white-1 {
+    background-color: black; 
+    color: #fff; 
+    border: 1px solid #fff; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+    margin-right: 3rem;
+    width: 15rem;
+    height: 5rem;
+    font-size: 2rem;
+
+    &:hover{
+        background-color: #f93d3d;
+        color: white;
+    }
+
+}
+
+.btn-white-2 {
     background-color: #f93d3d; 
     color: #fff; 
     border: 1px solid #fff; 
@@ -232,12 +249,17 @@ li{
     height: 5rem;
     font-size: 2rem;
 
+    &:hover{
+        background-color: black;
+        color: white;
+    }
+
 }
 
-.btn-white:hover {
+/* .btn-white-1:hover {
     background-color: #111 ; 
     color: #ffffff; 
-}
+} */
 
 .section-hero--image {
     width: 100%;
@@ -782,6 +804,17 @@ button:hover {
 .contact .map iframe{
     width: 500px;
     height: 500px;
+    
+}
+
+.contact-content .column-right h3{
+    font-size: 16px;
+    /* background-color: red; */
+    
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 10px;
+    color: red;
     
 }
 

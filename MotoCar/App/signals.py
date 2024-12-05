@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
-from .models import Rented_vehicles
+from .models import Rented_vehicles, Customer_register
 from django.conf import settings
 
 @receiver(post_save, sender=Rented_vehicles)
@@ -59,4 +59,26 @@ def send_success_mail(sender, instance, created, **kwargs):
             message,
             settings.DEFAULT_FROM_EMAIL,  # Sender's email
             [customer.email],  # Recipient's email
+        )
+
+
+
+@receiver(post_save, sender=Customer_register)
+def send_thankyou_mail(sender, instance, created, **kwargs):
+    if created:
+        subject = "Welcome To MotoCar Rentals Family!!"
+        message = (
+            f"Dear {instance.name},\n\n"
+            f"You have successfully created your account at MotoCar Rentals. We are grateful to have you in our family.\n"
+            f"We hope you have a great experience.\n\n"
+            f"For any support, please feel free to reach out. We will definitely help you out.\n\n"
+            f"Happy Renting!!\n\n"
+            f"Best Regards,\n"
+            f"Moto Car Rentals Team"
+        )
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,  # Sender's email
+            [instance.email],  # Recipient's email
         )

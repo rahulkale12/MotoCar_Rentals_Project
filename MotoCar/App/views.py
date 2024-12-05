@@ -1481,6 +1481,9 @@ def remove_from_cart(request, id):
 
 #####Contact View##############################################################################################
 
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 def contact(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -1489,8 +1492,14 @@ def contact(request):
         message = request.POST.get('message')
 
         try:
+            validate_email(email)
+        except ValidationError:
+            messages.info(request, "Please Enter valid Email")
+            return redirect('/contact/')
+
+        try:
             Contact_US.objects.create(name=name, email=email, subject=subject, message=message)
-            messages.info(request, "Thank you for Contacting MotoCar Rentals will shortly get back to you, till than Happy Renting!!")
+            messages.info(request, "Thank you for Contacting MotoCar Rentals, we have recieved your message, will shortly get back to you, till than Happy Renting!!")
             return redirect('/contact/')
         except:
             messages.info(request, "Cannot send message , Please try again after some time.")
