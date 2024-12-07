@@ -150,7 +150,10 @@
                         <td><input type="time" id="return_time" name="return_time" value="{{ return_time|time:'H:i' }}"  required readonly></td>
                     </tr>
                     <tr>
-                        <td><input type="hidden" value="{{ license_image }}" id="license_image"></td>
+                        <td><input type="hidden" value="{{ request.session.license_image }}" id="license_image"></td>
+                    </tr> 
+                    <tr>
+                        <td><input type="hidden" value="{{ request.session.id }}" id="customer_id"></td>
                     </tr> 
                    
                 
@@ -184,7 +187,7 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     
-
+    
     let delivery_type = document.getElementById('delivery-type').value
     let pickup_location = document.getElementById('pickup_location').value || "None"
     let pickup_time = document.getElementById('pickup_time').value || "None"
@@ -199,7 +202,14 @@
     let return_date = document.getElementById('return_date').value
     let return_time = document.getElementById('return_time').value
 
-    // let license_image = "{{filename}}"
+    let customer_id = '{{ request.session.id }}'
+    let license_id = '{{ request.session.license_image }}'
+    let license_image = encodeURIComponent(license_id);
+   
+    
+    // let license_image  = "{{ license_image }}"
+
+    // let license_image = "{{ filename }}"
     
     // let license_image = document.getElementById('license_image').value
     // let encoded_license_image = encodeURIComponent(license_image);
@@ -266,8 +276,8 @@
       }
     },
     "handler": function (response) {
-      window.location.href = `http://localhost:8000/success_single/{{ cart.id }}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${payment}/${response.razorpay_payment_id}`;
-        
+      window.location.href = `http://localhost:8000/success_single/{{ cart.id }}/${customer_id}/${license_image}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${payment}/${response.razorpay_payment_id}`;
+      
     },
     "modal": {
       "ondismiss": function () {

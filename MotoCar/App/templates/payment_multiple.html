@@ -150,7 +150,7 @@
                         <td><input type="time" id="return_time" name="return_time" value="{{ return_time|time:'H:i' }}"  required readonly></td>
                     </tr>
                     <tr>
-                        <td><input type="hidden" value="{{ license_image }}" id="license_image"></td>
+                        <td><input type="hidden" value="{{ request.session.license_image }}" id="license_image"></td>
                     </tr> 
                    
                 
@@ -211,8 +211,9 @@
     // alert(image_license)
     let payment = parseFloat(document.getElementById('total_price').value)*100
 
-
-  
+    let license_image = '{{ request.session.license_image }}'
+    // let license_image = encodeURIComponent('{{ request.session.license_image }}');
+    let customer_id = '{{ request.session.id }}';
    
 
   var options = {
@@ -268,7 +269,7 @@
       }
     },
     "handler": function (response) {
-      window.location.href = `http://localhost:8000/success_multiple/${cart_ids}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${payment}/${response.razorpay_payment_id}`;
+      window.location.href = `http://localhost:8000/success_multiple/${cart_ids}/${customer_id}/${license_image}/${delivery_type}/${pickup_location}/${pickup_time}/${pickup_date}/${delivery_location}/${delivery_time}/${delivery_date}/${return_date}/${return_time}/${payment}/${response.razorpay_payment_id}`;
         
     },
     "modal": {

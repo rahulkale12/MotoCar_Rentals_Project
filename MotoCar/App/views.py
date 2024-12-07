@@ -187,239 +187,10 @@ def my_cart(request):
 
 
 
-# def checkout(request):
-#     customer_id = request.session.get('id')
-    
-#     if not customer_id:
-#         return redirect('/accounts/login/')
-    
-#     try:
-#         customer = Rented_vehicles.objects.get(id=customer_id)
-#     except Customer_register.DoesNotExist:
-#         return redirect('/accounts/register/')
-    
-#     carts = Rented_vehicles.objects.filter(customer=customer)
-
-#     for cart in carts:
-#         if cart.car:
-#             cart.pickup_location = cart.car.city.name if cart.car.city else ''
-#         elif cart.bike:
-#             cart.pickup_location = cart.bike.city.name if cart.bike.city else ''
-
-#     if request.method == "POST":
-#         cart_id = request.POST.get('cart_id')
-
-#         if not cart_id:
-#             messages.error(request, "Cart ID is required.")
-#             return redirect('/cars/')
-
-#         try:
-#             cart = Cart.objects.get(id=cart_id)
-#         except ObjectDoesNotExist:
-#             return redirect('/cars/')
-        
-#         # Process form fields
-#         cart.delivery_type = request.POST.get('delivery_type')
-#         pickup_date_str = request.POST.get('pickup_date', '')
-#         return_date_str = request.POST.get('return_date', '')
-#         pickup_time = request.POST.get('pickup_time', '')
-#         delivery_time = request.POST.get('delivery_time', '')
-#         return_time = request.POST.get('return_time', '')
-#         pickup_location = request.POST.get('pickup_location', '')
-#         delivery_location = request.POST.get('delivery_location', '')
-#         license_image = request.FILES.get('license_image')
-#         delivery_date_str = request.POST.get('delivery_date', '')  # Delivery date field
-
-#         # Get today's date to compare with selected dates
-#         today_date = timezone.now().date()
-
-      
-
-#         # If pickup is selected, validate pickup date and times
-#         if cart.delivery_type == 'pickup':
-#             if not pickup_date_str:
-#                 messages.error(request, "Please select a pickup date.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             try:
-#                 pickup_date = datetime.strptime(pickup_date_str, '%Y-%m-%d').date()
-#                 # Ensure pickup date is not in the past
-#                 if pickup_date < today_date:
-#                     messages.error(request, "Pickup date cannot be in the past.")
-#                     return render(request, "my_cart.html", {"carts": carts})
-
-#                 # Ensure return date is after pickup date
-#                 if return_date_str:
-#                     return_date = datetime.strptime(return_date_str, '%Y-%m-%d').date()
-#                     if return_date <= pickup_date:
-#                         messages.error(request, "Return date must be after the pickup date.")
-#                         return render(request, "my_cart.html", {"carts": carts})
-
-#                 cart.pickup_date = pickup_date
-#                 cart.return_date = return_date if return_date_str else None
-#                 # Set delivery date to None when pickup is selected
-#                 cart.delivery_date = None
-
-#                 if cart.car:
-#                     cart.pickup_location = cart.car.city.name if cart.car.city else ''
-#                 elif cart.bike:
-#                     cart.pickup_location = cart.bike.city.name if cart.bike.city else ''
-
-#                 pickup_location = cart.pickup_location
-
-#             except ValueError:
-#                 messages.error(request, "Invalid date format. Please use YYYY-MM-DD.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             # Validate pickup time and return time
-#             if not pickup_time or not return_time:
-#                 messages.error(request, "Both pickup time and return time are required when pickup is selected.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             try:
-#                 # Only parse the time if it's provided, else leave it as None
-#                 if pickup_time != "None":
-#                     cart.pickup_time = datetime.strptime(pickup_time, '%H:%M').time()
-
-#                 if return_time != "None":
-#                     cart.return_time = datetime.strptime(return_time, '%H:%M').time()
-#             except ValueError:
-#                 messages.error(request, "Invalid time format. Use HH:MM.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             # Validate pickup location (Ensure it is not None or empty string)
-#             if not pickup_location or pickup_location.lower() == 'none':
-#                 messages.error(request, "Pickup location is required when pickup is selected.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-            
-
-#         # If delivery is selected, validate delivery date and times
-#         elif cart.delivery_type == 'delivery':
-#             if not delivery_date_str:
-#                 messages.error(request, "Please select a delivery date.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             try:
-#                 delivery_date = datetime.strptime(delivery_date_str, '%Y-%m-%d').date()
-
-#                 # Ensure delivery date is not in the past
-#                 if delivery_date < today_date:
-#                     messages.error(request, "Delivery date cannot be in the past.")
-#                     return render(request, "my_cart.html", {"carts": carts})
-
-#                 # Ensure return date is after delivery date
-#                 if return_date_str:
-#                     return_date = datetime.strptime(return_date_str, '%Y-%m-%d').date()
-#                     if return_date <= delivery_date:
-#                         messages.error(request, "Return date must be after the delivery date.")
-#                         return render(request, "my_cart.html", {"carts": carts})
-
-#                 cart.delivery_date = delivery_date
-#                 cart.return_date = return_date if return_date_str else None
-#                 # Set pickup date to None when delivery is selected
-#                 cart.pickup_date = None
-
-#             except ValueError:
-#                 messages.error(request, "Invalid delivery date format.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             # Validate delivery time and return time
-#             if not delivery_time or not return_time:
-#                 messages.error(request, "Both delivery time and return time are required when delivery is selected.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#             try:
-#                  # Only parse the time if it's provided, else leave it as None
-                # if pickup_time != "None":
-                #     cart.pickup_time = datetime.strptime(pickup_time, '%H:%M').time()
-
-#                 if return_time != "None":
-#                     cart.return_time = datetime.strptime(return_time, '%H:%M').time()
-#             except ValueError:
-#                 messages.error(request, "Invalid time format. Use HH:MM.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-            
-            
-
-#             # Validate delivery location (Ensure it is not None or empty string)
-#             if not delivery_location or delivery_location.lower() == 'none':
-#                 messages.error(request, "Delivery location is required when delivery is selected.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#         # Validate return date
-#         if return_date_str and not cart.delivery_type:
-#             try:
-#                 return_date = datetime.strptime(return_date_str, '%Y-%m-%d').date()
-#                 # Ensure return date is after pickup or delivery date
-#                 if cart.pickup_date and return_date <= cart.pickup_date:
-#                     messages.error(request, "Return date must be after the pickup date.")
-#                     return render(request, "my_cart.html", {"carts": carts})
-
-#                 if cart.delivery_date and return_date <= cart.delivery_date:
-#                     messages.error(request, "Return date must be after the delivery date.")
-#                     return render(request, "my_cart.html", {"carts": carts})
-
-#                 cart.return_date = return_date
-
-#             except ValueError:
-#                 messages.error(request, "Invalid return date format.")
-#                 return render(request, "my_cart.html", {"carts": carts})
-
-#         # Handle locations and license image
-#         if cart.delivery_type == 'pickup':
-#             cart.delivery_location = None
-#             cart.delivery_time = None
-#             cart.delivery_date = None
-#         elif cart.delivery_type == 'delivery':
-#             cart.pickup_location = None
-#             cart.pickup_time = None
-#             cart.pickup_date = None
-
-#         cart.pickup_location = pickup_location
-#         cart.delivery_location = delivery_location
-#         cart.license_image = license_image
-
-    
-#         if cart.delivery_type == 'pickup' and cart.pickup_date and cart.return_date:
-#             rent_duration = (cart.return_date - cart.pickup_date).days
-#         elif cart.delivery_type == 'delivery' and cart.delivery_date and cart.return_date:
-#             rent_duration = (cart.return_date - cart.delivery_date).days
-#         elif cart.delivery_type == 'delivery' and cart.delivery_date:
-#             rent_duration = 1  # Default 1 day duration for delivery if return date is not specified
-#         else:
-#             messages.error(request, "Please enter valid pickup and return dates.")
-#             return render(request, "my_cart.html", {"carts": carts})
-
-#         # Ensure rent duration is positive
-#         if rent_duration <= 0:
-#             messages.error(request, "Please enter valid pickup or delivery and return dates.")
-#             return render(request, "my_cart.html", {"carts": carts})
-        
-#         print(f"Rent Duration: {rent_duration} days")
-
-#         # Calculate total price for car or bike
-#         if cart.car:
-#             cart.total_price = cart.car.price_per_day * rent_duration
-#         elif cart.bike:
-#             cart.total_price = cart.bike.price_per_day * rent_duration
-
-#         cart.grand_total_price = cart.total_price
-#         cart.save()
-
-#         print(f"Grand Total Price: {cart.grand_total_price}")
-
-        
-
-#         # Only proceed to checkout if everything is valid
-#         return redirect('/checkout/')
-
-#     return render(request, "rented_vehicles.html", {"carts": carts})
-
-
-
 @never_cache
 def checkout(request,id):
     customer_id = request.session.get('id')
+    # print(f"Customer ID in session in checkout view: {customer_id}")
     if not customer_id:
         return redirect('/accounts/login/')
     try:
@@ -432,10 +203,14 @@ def checkout(request,id):
         cart = Cart.objects.get(id=id)
     except Cart.DoesNotExist:
         return redirect('/my_cart/')
+    
+    
+
     if cart.car:
-            # print(cart.car.city.name)
+    
             pickup_location = cart.car.city.name if cart.car.city else ""
             return render(request, "checkout.html",{"cart":cart, "pickup_location":pickup_location})
+    
     elif cart.bike:
             pickup_location = cart.bike.city.name if cart.bike.city else ""
             return render(request, "checkout.html",{"cart":cart, "pickup_location":pickup_location})   
@@ -449,32 +224,6 @@ def checkout(request,id):
 
     
 
-# def checkouts(request):
-#     customer_id = request.session.get('id')
-#     customer = Customer_register.objects.get(id=customer_id)
-#     carts = Cart.objects.filter(customer = customer)
-#     pickup_location = None
-
-#     for cart in carts:
-#         # Check if the cart contains both a car and a bike
-#         if cart.car and cart.bike:
-#             # Both car and bike in the cart
-#             if cart.car.city.name != cart.bike.city.name:
-#                 # If the cities are different, show an error message and redirect
-#                 messages.info(request, "If you want to rent multiple vehicles, please select them from the same city.")
-#                 return render(request, "checkouts.html",{"carts":carts})  # Redirect immediately to the cart page
-#             pickup_location = cart.car.city.name if cart.car.city else "None"
-        
-#         elif cart.car:
-#             # Only car in the cart
-#             pickup_location = cart.car.city.name if cart.car.city else ""
-        
-#         elif cart.bike:
-#             # Only bike in the cart
-#             pickup_location = cart.bike.city.name if cart.bike.city else ""
-     
-        
-#     return render(request, "checkouts.html",{"carts":carts, "pickup_location":pickup_location})
 
 
 ##############################################################################################################################################
@@ -482,7 +231,14 @@ def checkout(request,id):
 
 def checkouts(request):
     customer_id = request.session.get('id')
-    customer = Customer_register.objects.get(id=customer_id)
+    # print(f"customer id retrieved in checkouts: {customer_id}")
+    if not customer_id:
+        return redirect('/accounts/login/')
+    try:
+
+        customer = Customer_register.objects.get(id=customer_id)
+    except Customer_register.DoesNotExist:
+        return redirect('/accounts/register/')
     carts = Cart.objects.filter(customer=customer)
     pickup_location = None
 
@@ -521,7 +277,7 @@ def checkouts(request):
 def validate_form_multiple(request):
     
     customer_id = request.session.get("id")
-
+   
     if not customer_id:
         return redirect("/accounts/login/")
     
@@ -565,6 +321,8 @@ def validate_form_multiple(request):
             fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
             filename = fs.save(license_image.name, license_image)
             request.session['license_image'] = filename
+            # print(f"licnse image retrievd in validate_multiple {request.session.get('license_image')}")
+            
         else:
             messages.info(request, "License file is Mandatory")
             # return render(request,'checkouts.html',{'carts':carts})
@@ -785,6 +543,8 @@ def validate_form_multiple(request):
 def validate_form_single(request,id):
     
     customer_id = request.session.get("id")
+    print(f"Customer ID in session in validate_form_single view view: {customer_id}")
+    
 
     if not customer_id:
         return redirect("/accounts/login/")
@@ -831,33 +591,37 @@ def validate_form_single(request,id):
             fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'licenceFile'))
             filename = fs.save(license_image.name, license_image)
             request.session['license_image'] = filename
+           
         else:
             messages.info(request, "License file is Mandatory")
-            return render(request,'checkout.html',{'cart':cart})
+            # return render(request,'checkout.html',{'cart':cart})
+            return redirect(f'/checkout/{cart.id}/')
 
         
          # Pickup code
 
 
         if delivery_type == "pickup":
-            # print("hellorahul",delivery_type)
             if not pickup_date:
                 messages.info(request, "Please select Pickup Date")
-                return render(request, "checkout.html", {"cart": cart})
+                # return render(request, "checkout.html", {"cart": cart})
+                return redirect('/checkout/')
             
             try:
                 pickup_date = datetime.strptime(pickup_date , '%Y-%m-%d' ).date()
 
                 if pickup_date < today_date:
                         messages.info(request, "Pickup date cannot be in past.")
-                        return render(request, "checkout.html" ,{"cart":cart})
+                        # return render(request, "checkout.html" ,{"cart":cart})
+                        return redirect('/checkout/')
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
 
                     if return_date <= pickup_date:
                         messages.info(request, "return date must be after pickup date")
-                        return render(request, "checkout.html",{"cart":cart})
+                        # return render(request, "checkout.html",{"cart":cart})
+                        return redirect('/checkout/')
                     
                 
                 pickup_date = pickup_date
@@ -867,17 +631,21 @@ def validate_form_single(request,id):
    
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
-                return render(request, "checkout.html",{"cart":cart})
+                # return render(request, "checkout.html",{"cart":cart})
+                return redirect('/checkout/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
-                    return render(request, "checkout.html" , {"cart":cart})
+                    # return render(request, "checkout.html" , {"cart":cart})
+                    return redirect('/checkout/')
+            
                 
             
 
             if not return_time and pickup_time:
                 messages.info(request, "Please select pickup and return time")
-                return render(request, "checkout.html" ,{"cart":cart})
+                # return render(request, "checkout.html" ,{"cart":cart})
+                return redirect('/checkout/')
             
             try:
                 if pickup_time != "None":
@@ -889,7 +657,8 @@ def validate_form_single(request,id):
                     
             except ValueError:
                 messages.info(request, "Invalid date format, please use HH:MM")
-                return render(request, "checkout.html" ,{"cart":cart})
+                # return render(request, "checkout.html" ,{"cart":cart})
+                return redirect('/checkout/')
             
          
             delivery_location = "None"
@@ -909,16 +678,17 @@ def validate_form_single(request,id):
                 rent_duration = (return_date - pickup_date).days
             else:
                 messages.info(request, "please select dates to calculate total_price")
-                return render(request, "checkout.html", {"cart":cart})
+                # return render(request, "checkout.html", {"cart":cart})
+                return redirect('/checkout/')
             
         
             total_price = 0
 
             
             if cart.car:
-                total_price = cart.car.price_per_day * rent_duration
+                total_price += cart.car.price_per_day * rent_duration
             elif cart.bike:
-                total_price = cart.bike.price_per_day *rent_duration
+                total_price += cart.bike.price_per_day *rent_duration
             # elif cart.car and cart.bike:
             #     total_price = (cart.car.price_per_day + cart.bike.price_per_day) * rent_duration
            
@@ -928,13 +698,13 @@ def validate_form_single(request,id):
         
        
 
-
+########## delievery type code  #########################
 
         elif delivery_type=="delivery":
-            print("king",delivery_type)
             if not delivery_date:
                 messages.info(request, "Please select Delivery Date")
-                return render(request, "checkout.html" , {"cart": cart})
+                # return render(request, "checkout.html" , {"cart": cart})
+                return redirect('/checkout/')
             
             try:
                  
@@ -942,14 +712,16 @@ def validate_form_single(request,id):
 
                 if delivery_date < today_date:
                     messages.info(request, "Delivery date cannot pe past to preset date")
-                    return render(request, "checkout.html",{"cart":cart})
+                    # return render(request, "checkout.html",{"cart":cart})
+                    return redirect('/checkout/')
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
 
                     if return_date <= delivery_date:
                         messages.info(request, "return date cannot be same as delivery date")
-                        return render(request, "checkout.html",{"cart":cart})
+                        # return render(request, "checkout.html",{"cart":cart})
+                        return redirect('/checkout/')
                     
                 
                 delivery_date = delivery_date if delivery_date else "None"
@@ -957,21 +729,22 @@ def validate_form_single(request,id):
 
                 
 
-
-                
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
-                return render(request, "checkout.html",{"cart":cart})
+                # return render(request, "checkout.html",{"cart":cart})
+                return redirect('/checkout/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
-                    return render(request, "checkout.html" , {"cart":cart})
+                    # return render(request, "checkout.html" , {"cart":cart})
+                    return redirect('/checkout/')
                 
             
 
             if not return_time and delivery_time:
                 messages.info(request, "Please select pickup and return time") 
-                return render(request, "checkout.html", {"cart":cart})
+                # return render(request, "checkout.html", {"cart":cart})
+                return redirect('/checkout/')
             
             try:
                 if delivery_time != "None":
@@ -982,12 +755,14 @@ def validate_form_single(request,id):
                     
             except ValueError:
                 messages.info(request, "Both Delivery time and Return time is required.")
-                return render(request, "checkout.html" ,{"cart":cart})
+                # return render(request, "checkout.html" ,{"cart":cart})
+                return redirect('/checkout/')
             
             
             if not delivery_location or delivery_location.lower() == 'none':
                 messages.error(request, "Delivery location is required when delivery is selected.")
-                return render(request, "checkout.html" , {"cart": cart})
+                # return render(request, "checkout.html" , {"cart": cart})
+                return redirect('/checkout/')
             
             pickup_location = "None"
             pickup_time = "None"
@@ -1004,7 +779,8 @@ def validate_form_single(request,id):
                 rent_duration = (return_date - delivery_date).days
             else:
                 messages.info(request, "please select dates to calculate total_price")
-                return render(request, "checkout.html",{"cart":cart})
+                # return render(request, "checkout.html",{"cart":cart})
+                return redirect('/checkout/')
             
 
             total_price = 0
@@ -1016,6 +792,7 @@ def validate_form_single(request,id):
                 total_price = cart.bike.price_per_day *rent_duration
             elif cart.car and cart.bike:
                 total_price = (cart.car.price_per_day + cart.bike.price_per_day) * rent_duration
+                
             
 
 
@@ -1033,7 +810,7 @@ def validate_form_single(request,id):
 
 def payment(request, cart_id, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time):
 
-
+    
 
     if delivery_date == "None":
         delivery_date = None
@@ -1075,9 +852,15 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
     else:
         return_time = datetime.strptime(return_time, "%H:%M:%S").time()
 
+    customer_id = request.session.get('id')
+    print(f"user id Retrieved from Session in payemnt view: {customer_id}")
+  
     license_image = request.session.get('license_image')
+    customer_id = request.session.get('id')
 
-
+    
+    
+  
     try:
         cart = Cart.objects.get(id=cart_id)
     except Cart.DoesNotExist:
@@ -1098,8 +881,10 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
                            "return_date":return_date,
                            "return_time":return_time, 
                         #    "license_image":license_image_url 
-                            # "filename":filename
-                            'license_image':license_image
+                            # "filename":filename,
+                            'customer_id' :customer_id,
+                            'license_image':license_image,
+                            
                             
                            }
             
@@ -1115,7 +900,8 @@ def payment(request, cart_id, total_price, delivery_type, delivery_location, del
 
 def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_location, delivery_date,delivery_time, pickup_date, pickup_time,pickup_location, return_date, return_time ):
 
-    
+    # print("Session Data:", request.session.items())     #to debug whether getting session and item or not.
+
    
     if delivery_date == "None":
         delivery_date = None
@@ -1158,8 +944,10 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
         return_time = datetime.strptime(return_time, "%H:%M:%S").time()
 
 
-
-    # license_image = request.session.get('license_image')
+    customer_id = request.session.get('id')
+    print(f"customer id retirved in payemnt_multiple: {customer_id}")
+    license_image = request.session.get('license_image')
+    print(f"license_image retrived in payemnt_multiple :{license_image}")
 
     
 
@@ -1187,7 +975,7 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
                            "pickup_location":pickup_location,
                            "return_date":return_date,
                            "return_time":return_time, 
-                        #    "license_image":license_image,
+                           "license_image":license_image,
                            "cart_ids":cart_ids_str  
                          }
             
@@ -1199,17 +987,28 @@ def payment_multiple(request, cart_ids, total_price, delivery_type, delivery_loc
 
 
 #################################################################################################################################################
+from urllib.parse import unquote
 
-
-def success_single(request,cart_id, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
+def success_single(request,cart_id,customer_id, license_image,delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
   
-    license_image = request.session.pop('license_image', None)
 
+    if not request.session.get('id'):
+        request.session['id'] = customer_id
+    new_id = request.session.get('id')
+    
+    # print(f"Session Data: {request.session.items()}")
+    license_image = unquote(license_image)
+   
+    # if not request.session.get('license_image'):
+    #     request.session['license_image'] = license_image
+    # new_license = request.session.get('license_image')
+
+        
     if license_image:
         # Reconstruct the full URL to the image stored in 'media/licenceFile'
         license_image = os.path.join(settings.MEDIA_URL, 'licenceFile', license_image)
-    # else:
-    #     license_image = None
+    else:
+        license_image = None
     
   
 
@@ -1254,24 +1053,25 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
         delivery_location = delivery_location
 
 
-
-    customer_id = request.session.get('id')
-    
-    
+    # customer_id = request.session.get('id')    
    
-    if not customer_id:
-        print("Session expired or customer_id is missing.")
-        return redirect("/accounts/login/")
+    # if not customer_id:
+    #     print("Session expired or customer_id is missing.")
+    #     return redirect("/accounts/login/")
+
+   
     
     try:
-        customer = Customer_register.objects.get(id=customer_id)
+        # customer = Customer_register.objects.get(id=customer_id)
+        customer = Customer_register.objects.get(id= new_id)
     except Customer_register.DoesNotExist:
-        print(f"Customer with ID {customer_id} does not exist.")
+        # print(f"Customer with ID {customer_id} does not exist.")
         return redirect("/accounts/login/")
     
 
     try:
         cart = Cart.objects.get(id = cart_id)
+        print(f"Cart success view: {cart}")
     except Cart.DoesNotExist:
         return redirect("my_cart")
     
@@ -1279,19 +1079,47 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
    
     if cart.car:
         
-        final_detail = Rented_vehicles.objects.create(customer=customer, car=cart.car, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
+        final_detail = Rented_vehicles.objects.create(customer=customer, 
+                                                      car=cart.car, 
+                                                      delivery_type = delivery_type ,
+                                                      pickup_date = pickup_date, 
+                                                      delivery_date = delivery_date, 
+                                                      return_date = return_date, 
+                                                      pickup_time = pickup_time, 
+                                                      delivery_time = delivery_time, 
+                                                      return_time = return_time, 
+                                                      pickup_location = pickup_location, 
+                                                      delivery_location = delivery_location, 
+                                                      license_file = license_image, 
+                                                      total_price = payment, 
+                                                      payment_id = payment_id  )
 
         final_detail.save()
         cart.delete()
+        print(f"Cart ID bike: {cart_id} deleted.")
         
         return redirect('/my_rentals/')
 
     elif cart.bike:
 
-        final_detail = Rented_vehicles.objects.create(customer=customer, bike=cart.bike, delivery_type = delivery_type ,pickup_date = pickup_date, delivery_date = delivery_date, return_date = return_date, pickup_time = pickup_time, delivery_time = delivery_time, return_time = return_time, pickup_location = pickup_location, delivery_location = delivery_location, license_file = license_image, total_price = payment, payment_id = payment_id  )
+        final_detail = Rented_vehicles.objects.create(customer=customer, 
+                                                      bike=cart.bike, 
+                                                      delivery_type = delivery_type ,
+                                                      pickup_date = pickup_date, 
+                                                      delivery_date = delivery_date, 
+                                                      return_date = return_date, 
+                                                      pickup_time = pickup_time, 
+                                                      delivery_time = delivery_time, 
+                                                      return_time = return_time, 
+                                                      pickup_location = pickup_location, 
+                                                      delivery_location = delivery_location, 
+                                                      license_file = license_image, 
+                                                      total_price = payment, 
+                                                      payment_id = payment_id  )
 
         final_detail.save()
         cart.delete()
+        print(f"Cart ID car: {cart_id} deleted.")
 
         return redirect('/my_rentals/')
     
@@ -1302,15 +1130,24 @@ def success_single(request,cart_id, delivery_type, pickup_location, pickup_time,
 
 
 #############################################################################################################################
+# from urllib.parse import unquote
+
+def success_multiple(request,cart_ids,customer_id,license_image,delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
+
+    print("Session Data:", request.session.items())
 
 
-def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_time, pickup_date, delivery_location, delivery_time, delivery_date, return_date, return_time, payment,payment_id):
-    
-    license_image = request.session.pop('license_image', None)
+    # license_image = unquote(license_image)
+    # print("Decoded License Image Path:", license_image)
+    # license_image = request.session.get('license_image', None)
 
-    if license_image:
+    if not request.session.get('license_image'):
+        request.session['license_image'] = license_image
+    new_license = request.session.get('license_image')
+
+    if new_license:
         # Reconstruct the full URL to the image stored in 'media/licenceFile'
-        license_image = os.path.join(settings.MEDIA_URL, 'licenceFile', license_image)
+        license_image = os.path.join(settings.MEDIA_URL, 'licenceFile', new_license)
     else:
         license_image = None
 
@@ -1356,9 +1193,9 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
     else:
         delivery_location = delivery_location
 
-      
+    ### converting cart_id into int data type and many ids into list so we can iterate over.
     cart_ids_list = [int(cart_id) for cart_id in cart_ids.split(",") ]
-    # print(f"Cart IDs List: {cart_ids_list}")
+    
 
     try:
         carts = Cart.objects.filter(id__in=cart_ids_list)
@@ -1366,15 +1203,19 @@ def success_multiple(request,cart_ids, delivery_type, pickup_location, pickup_ti
     except Cart.DoesNotExist:
         return redirect("/cars/")
     
+    if not request.session.get('id'):  # If session ID is missing
+        request.session['id'] = customer_id
 
+    new_id = request.session.get('id')
 
-    customer_id = request.session.get('id')
+    # customer_id = request.session.get('id')
+    # print(f"customer id retrieved in success_multiple {customer_id}")
    
-    if not customer_id:
-        return redirect("/accounts/login/")
+    # if not customer_id:
+    #     return redirect("/accounts/login/")
     
     try:
-        customer = Customer_register.objects.get(id=customer_id)
+        customer = Customer_register.objects.get(id=new_id)
     except Customer_register.DoesNotExist:
         return redirect("/accounts/login/")
     

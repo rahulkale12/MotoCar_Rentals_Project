@@ -22,8 +22,8 @@ urlpatterns = [
     
     
 
-    path('success_single/<int:cart_id>/<str:delivery_type>/<str:pickup_location>/<str:pickup_time>/<str:pickup_date>/<str:delivery_location>/<str:delivery_time>/<str:delivery_date>/<str:return_date>/<str:return_time>/<int:payment>/<str:payment_id>/', views.success_single, name='success_single'),
-    path('success_multiple/<str:cart_ids>/<str:delivery_type>/<str:pickup_location>/<str:pickup_time>/<str:pickup_date>/<str:delivery_location>/<str:delivery_time>/<str:delivery_date>/<str:return_date>/<str:return_time>/<int:payment>/<str:payment_id>/', views.success_multiple, name='success_multiple'),
+    path('success_single/<int:cart_id>/<int:customer_id>/<str:license_image>/<str:delivery_type>/<str:pickup_location>/<str:pickup_time>/<str:pickup_date>/<str:delivery_location>/<str:delivery_time>/<str:delivery_date>/<str:return_date>/<str:return_time>/<int:payment>/<str:payment_id>/', views.success_single, name='success_single'),
+    path('success_multiple/<str:cart_ids>/<int:customer_id>/<str:license_image>/<str:delivery_type>/<str:pickup_location>/<str:pickup_time>/<str:pickup_date>/<str:delivery_location>/<str:delivery_time>/<str:delivery_date>/<str:return_date>/<str:return_time>/<int:payment>/<str:payment_id>/', views.success_multiple, name='success_multiple'),
     # re_path(r'^success_single/(?P<cart_id>\d+)/(?P<delivery_type>\w+)/(?P<pickup_location>[^/]+)/(?P<pickup_time>[^/]+)/(?P<pickup_date>[^/]+)/(?P<delivery_location>[^/]+)/(?P<delivery_time>[^/]+)/(?P<delivery_date>[^/]+)/(?P<return_date>[^/]+)/(?P<return_time>[^/]+)/(?P<license_image>[^/]+)/(?P<payment>\d+)/(?P<payment_id>[^/]+)/$', views.success_single, name='success_single'),
 
     path("my_rentals/",views.my_rentals, name="my_rentals"),
