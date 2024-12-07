@@ -209,7 +209,7 @@
     // alert(license_image)
     // image_license = "'" + license_image + "'"
     // alert(image_license)
-    let payment = parseFloat(document.getElementById('total_price').value)*100
+    let payment = parseFloat(document.getElementById('total_price').value)
 
     let license_image = '{{ request.session.license_image }}'
     // let license_image = encodeURIComponent('{{ request.session.license_image }}');

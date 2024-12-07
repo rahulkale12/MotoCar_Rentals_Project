@@ -605,7 +605,7 @@ def validate_form_single(request,id):
             if not pickup_date:
                 messages.info(request, "Please select Pickup Date")
                 # return render(request, "checkout.html", {"cart": cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             try:
                 pickup_date = datetime.strptime(pickup_date , '%Y-%m-%d' ).date()
@@ -613,7 +613,7 @@ def validate_form_single(request,id):
                 if pickup_date < today_date:
                         messages.info(request, "Pickup date cannot be in past.")
                         # return render(request, "checkout.html" ,{"cart":cart})
-                        return redirect('/checkout/')
+                        return redirect(f'/checkout/{cart.id}/')
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
@@ -621,7 +621,7 @@ def validate_form_single(request,id):
                     if return_date <= pickup_date:
                         messages.info(request, "return date must be after pickup date")
                         # return render(request, "checkout.html",{"cart":cart})
-                        return redirect('/checkout/')
+                        return redirect(f'/checkout/{cart.id}/')
                     
                 
                 pickup_date = pickup_date
@@ -632,12 +632,12 @@ def validate_form_single(request,id):
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
                 # return render(request, "checkout.html",{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
                     # return render(request, "checkout.html" , {"cart":cart})
-                    return redirect('/checkout/')
+                    return redirect(f'/checkout/{cart.id}/')
             
                 
             
@@ -645,7 +645,7 @@ def validate_form_single(request,id):
             if not return_time and pickup_time:
                 messages.info(request, "Please select pickup and return time")
                 # return render(request, "checkout.html" ,{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             try:
                 if pickup_time != "None":
@@ -658,7 +658,7 @@ def validate_form_single(request,id):
             except ValueError:
                 messages.info(request, "Invalid date format, please use HH:MM")
                 # return render(request, "checkout.html" ,{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
          
             delivery_location = "None"
@@ -679,7 +679,7 @@ def validate_form_single(request,id):
             else:
                 messages.info(request, "please select dates to calculate total_price")
                 # return render(request, "checkout.html", {"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
         
             total_price = 0
@@ -691,7 +691,7 @@ def validate_form_single(request,id):
                 total_price += cart.bike.price_per_day *rent_duration
             # elif cart.car and cart.bike:
             #     total_price = (cart.car.price_per_day + cart.bike.price_per_day) * rent_duration
-           
+            # total_price = round(total_price, 2)
             
             
             return redirect(f"/payment/{cart.id}/{total_price}/{delivery_type}/{delivery_location}/{delivery_date}/{delivery_time}/{pickup_date}/{pickup_time}/{pickup_location}/{return_date}/{return_time}/")
@@ -704,7 +704,7 @@ def validate_form_single(request,id):
             if not delivery_date:
                 messages.info(request, "Please select Delivery Date")
                 # return render(request, "checkout.html" , {"cart": cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             try:
                  
@@ -713,7 +713,7 @@ def validate_form_single(request,id):
                 if delivery_date < today_date:
                     messages.info(request, "Delivery date cannot pe past to preset date")
                     # return render(request, "checkout.html",{"cart":cart})
-                    return redirect('/checkout/')
+                    return redirect(f'/checkout/{cart.id}/')
                 
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
@@ -721,7 +721,7 @@ def validate_form_single(request,id):
                     if return_date <= delivery_date:
                         messages.info(request, "return date cannot be same as delivery date")
                         # return render(request, "checkout.html",{"cart":cart})
-                        return redirect('/checkout/')
+                        return redirect(f'/checkout/{cart.id}/')
                     
                 
                 delivery_date = delivery_date if delivery_date else "None"
@@ -732,19 +732,19 @@ def validate_form_single(request,id):
             except ValueError:
                 messages.info(request, "Invalid date format, please date in YY-MM-DD")
                 # return render(request, "checkout.html",{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             if not return_date:
                     messages.info(request, "Please select return date")
                     # return render(request, "checkout.html" , {"cart":cart})
-                    return redirect('/checkout/')
+                    return redirect(f'/checkout/{cart.id}/')
                 
             
 
             if not return_time and delivery_time:
                 messages.info(request, "Please select pickup and return time") 
                 # return render(request, "checkout.html", {"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             try:
                 if delivery_time != "None":
@@ -756,13 +756,13 @@ def validate_form_single(request,id):
             except ValueError:
                 messages.info(request, "Both Delivery time and Return time is required.")
                 # return render(request, "checkout.html" ,{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             
             if not delivery_location or delivery_location.lower() == 'none':
                 messages.error(request, "Delivery location is required when delivery is selected.")
                 # return render(request, "checkout.html" , {"cart": cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
             pickup_location = "None"
             pickup_time = "None"
@@ -780,19 +780,19 @@ def validate_form_single(request,id):
             else:
                 messages.info(request, "please select dates to calculate total_price")
                 # return render(request, "checkout.html",{"cart":cart})
-                return redirect('/checkout/')
+                return redirect(f'/checkout/{cart.id}/')
             
 
             total_price = 0
 
            
             if cart.car:
-                total_price = cart.car.price_per_day * rent_duration
+                total_price += cart.car.price_per_day * rent_duration
             elif cart.bike:
-                total_price = cart.bike.price_per_day *rent_duration
+                total_price += cart.bike.price_per_day *rent_duration
             elif cart.car and cart.bike:
                 total_price = (cart.car.price_per_day + cart.bike.price_per_day) * rent_duration
-                
+            # total_price = round(total_price, 2)
             
 
 
