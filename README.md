@@ -33,7 +33,7 @@ Welcome to **MotoCar Rentals**, the finest website in India that offers car and 
 ## Setup Instructions 🖥️
 
 1. Clone the repository:
-   git clone https://github.com/your-username/motocar-rentals.git
+   git clone (https://github.com/rahulkale12/MotoCar_Rentals_Project)
 2. Navigate to the project directory:
   cd motocar-rentals
 3. Create and activate a virtual environment:
