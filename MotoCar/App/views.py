@@ -576,6 +576,7 @@ def validate_form_single(request,id):
 
         today_date = timezone.now().date()
         max_allowed_time = dt_time(23,0)
+        min_allowed_time = dt_time(6, 0)
 
         
       
@@ -654,15 +655,15 @@ def validate_form_single(request,id):
             try:
                 if pickup_time != "None":
                     pickup_time = datetime.strptime(pickup_time, "%H:%M").time()
-                if pickup_time>max_allowed_time:                                                 #made changes just now
-                    messages.info(request, "Pickup time should be on or before 11:00 PM.")
+                if pickup_time>max_allowed_time or pickup_time<min_allowed_time:                                                 #made changes just now
+                    messages.info(request, "Pickup time must be between 6:00 AM and 11:00 PM.")
                     return redirect(f'/checkout/{cart.id}/')
                 
 
                 if return_time != "None":
                     return_time = datetime.strptime(return_time, "%H:%M").time()
-                if return_time > max_allowed_time:                                                    #made changes just now
-                    messages.info(request, "Return time should be on or before 11:00 PM.")
+                if return_time > max_allowed_time or return_time<min_allowed_time:                                                    #made changes just now
+                    messages.info(request, "Return time must be between 6:00 AM and 11:00 PM.")
                     return redirect(f'/checkout/{cart.id}/')
                     
             except ValueError:
@@ -761,14 +762,14 @@ def validate_form_single(request,id):
             try:
                 if delivery_time != "None":
                     delivery_time = datetime.strptime(delivery_time, "%H:%M").time()
-                if delivery_time>max_allowed_time:                                                    #changes made just now
-                    messages.info(request, "Delivery time should be on or before 11:00 PM.")
+                if delivery_time>max_allowed_time or delivery_time<min_allowed_time:                                                    #changes made just now
+                    messages.info(request, "Delivery time must be between 6:00 AM and 11:00 PM.")
                     return redirect(f'/checkout/{cart.id}/')
 
                 if return_time != "None":
                     return_time = datetime.strptime(return_time, "%H:%M").time()
-                if return_time > max_allowed_time:                                                       #changes made just now
-                    messages.info(request, "Return time should be on or before 11:00 PM.")
+                if return_time > max_allowed_time or return_time<min_allowed_time:                                                       #changes made just now
+                    messages.info(request, "Return time must be between 6:00 AM and 11:00 PM.")
                     return redirect(f'/checkout/{cart.id}/')
                     
             except ValueError:
@@ -1076,6 +1077,10 @@ def success_single(request,cart_id,customer_id, license_image,delivery_type, pic
         delivery_location = delivery_location
 
 
+    payment_amount_paise = int(payment)  # from the URL
+    payment_amount_rupees = payment_amount_paise / 100  # Convert back to rupees
+
+
     # customer_id = request.session.get('id')    
    
     # if not customer_id:
@@ -1114,7 +1119,7 @@ def success_single(request,cart_id,customer_id, license_image,delivery_type, pic
                                                       pickup_location = pickup_location, 
                                                       delivery_location = delivery_location, 
                                                       license_file = license_image, 
-                                                      total_price = payment, 
+                                                      total_price = payment_amount_rupees, 
                                                       payment_id = payment_id  )
 
         final_detail.save()
@@ -1137,7 +1142,7 @@ def success_single(request,cart_id,customer_id, license_image,delivery_type, pic
                                                       pickup_location = pickup_location, 
                                                       delivery_location = delivery_location, 
                                                       license_file = license_image, 
-                                                      total_price = payment, 
+                                                      total_price = payment_amount_rupees , 
                                                       payment_id = payment_id  )
 
         final_detail.save()
