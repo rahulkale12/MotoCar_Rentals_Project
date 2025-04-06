@@ -10,6 +10,7 @@ from django.conf import settings
 import os
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.cache import never_cache
+from datetime import time as dt_time
 
 
 # Create your views here.
@@ -574,6 +575,7 @@ def validate_form_single(request,id):
 
 
         today_date = timezone.now().date()
+        max_allowed_time = dt_time(23,0)
 
         
       
@@ -600,6 +602,8 @@ def validate_form_single(request,id):
         
          # Pickup code
 
+         
+
 
         if delivery_type == "pickup":
             if not pickup_date:
@@ -618,7 +622,7 @@ def validate_form_single(request,id):
                 if return_date:
                     return_date = datetime.strptime(return_date, "%Y-%m-%d").date()
 
-                    if return_date <= pickup_date:
+                    if (return_date <= pickup_date):
                         messages.info(request, "return date must be after pickup date")
                         # return render(request, "checkout.html",{"cart":cart})
                         return redirect(f'/checkout/{cart.id}/')
@@ -650,10 +654,16 @@ def validate_form_single(request,id):
             try:
                 if pickup_time != "None":
                     pickup_time = datetime.strptime(pickup_time, "%H:%M").time()
+                if pickup_time>max_allowed_time:                                                 #made changes just now
+                    messages.info(request, "Pickup time should be on or before 11:00 PM.")
+                    return redirect(f'/checkout/{cart.id}/')
                 
 
                 if return_time != "None":
                     return_time = datetime.strptime(return_time, "%H:%M").time()
+                if return_time > max_allowed_time:                                                    #made changes just now
+                    messages.info(request, "Return time should be on or before 11:00 PM.")
+                    return redirect(f'/checkout/{cart.id}/')
                     
             except ValueError:
                 messages.info(request, "Invalid date format, please use HH:MM")
@@ -666,21 +676,23 @@ def validate_form_single(request,id):
             delivery_date = "None"
            
             pickup_location = pickup_location if pickup_location else "None"
-          
-            # license_image = license_image
-            
-            
-            
 
-            rent_duration = 0
 
+
+            # rent_duration = 0
+
+            # if delivery_type == "pickup" and pickup_date and return_date:
+            #     rent_duration = (return_date - pickup_date).days
+            # else:
+            #     messages.info(request, "please select dates to calculate total_price")
+            #     # return render(request, "checkout.html", {"cart":cart})
+            #     return redirect(f'/checkout/{cart.id}/')
             if delivery_type == "pickup" and pickup_date and return_date:
-                rent_duration = (return_date - pickup_date).days
-            else:
-                messages.info(request, "please select dates to calculate total_price")
-                # return render(request, "checkout.html", {"cart":cart})
+                rent_duration = (return_date - pickup_date).days                                     #changes made just now
+            if rent_duration > 7:
+                messages.info(request, "You can only rent the vehicle for up to 7 days.")
                 return redirect(f'/checkout/{cart.id}/')
-            
+
         
             total_price = 0
 
@@ -749,9 +761,15 @@ def validate_form_single(request,id):
             try:
                 if delivery_time != "None":
                     delivery_time = datetime.strptime(delivery_time, "%H:%M").time()
+                if delivery_time>max_allowed_time:                                                    #changes made just now
+                    messages.info(request, "Delivery time should be on or before 11:00 PM.")
+                    return redirect(f'/checkout/{cart.id}/')
 
                 if return_time != "None":
                     return_time = datetime.strptime(return_time, "%H:%M").time()
+                if return_time > max_allowed_time:                                                       #changes made just now
+                    messages.info(request, "Return time should be on or before 11:00 PM.")
+                    return redirect(f'/checkout/{cart.id}/')
                     
             except ValueError:
                 messages.info(request, "Both Delivery time and Return time is required.")
@@ -773,15 +791,20 @@ def validate_form_single(request,id):
             # license_image = license_image
 
 
-            rent_duration = 0
+            # rent_duration = 0
 
-            if delivery_type == "delivery" and delivery_date and return_date:
-                rent_duration = (return_date - delivery_date).days
-            else:
-                messages.info(request, "please select dates to calculate total_price")
-                # return render(request, "checkout.html",{"cart":cart})
-                return redirect(f'/checkout/{cart.id}/')
+            # if delivery_type == "delivery" and delivery_date and return_date:
+            #     rent_duration = (return_date - delivery_date).days
+            # else:
+            #     messages.info(request, "please select dates to calculate total_price")
+            #     # return render(request, "checkout.html",{"cart":cart})
+            #     return redirect(f'/checkout/{cart.id}/')
             
+            if delivery_type == "delivery" and delivery_date and return_date:         #changes made just now
+                rent_duration = (return_date - delivery_date).days
+            if rent_duration > 7:
+                messages.info(request, "You can only rent the vehicle for up to 7 days.")
+                return redirect(f'/checkout/{cart.id}/')
 
             total_price = 0
 
